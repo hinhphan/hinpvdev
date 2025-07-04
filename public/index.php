@@ -17,4 +17,7 @@ require __DIR__.'/../vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+// Add custom funcs
+require __DIR__.'/../bootstrap/functions.php';
+
 $app->handleRequest(Request::capture());

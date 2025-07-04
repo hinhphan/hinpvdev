@@ -1,0 +1,10 @@
+@host = http://127.0.0.1:8000/api/v1
+
+POST {{host}}/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "admin@admin.com",
+    "password": "password"
+}
