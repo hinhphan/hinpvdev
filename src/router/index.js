@@ -11,13 +11,23 @@ const router = createRouter({
       component: HomeView,
       meta: {
         layout: 'MainLayout',
-        requiredAuth: true,
+        // requiredAuth: true,
       },
     },
     {
       path: '/login',
       name: 'Login',
       component: () => import('../views/auths/LoginView.vue'),
+    },
+    {
+      path: '/tools',
+      children: [
+        {
+          path: 'placehold-images',
+          name: 'PlaceholdImage',
+          component: () => import('../views/tools/PlaceholdImageView.vue'),
+        }
+      ]
     },
     {
       path: '/:pathMatch(.*)*',

@@ -2,5 +2,5 @@
 </script>
 
 <template>
-  Home
+  Hin nè!
 </template>

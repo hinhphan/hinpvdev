@@ -8,7 +8,7 @@ const props = defineProps({
   size: { type: null, required: false },
   class: { type: null, required: false },
   asChild: { type: Boolean, required: false },
-  as: { type: [String, Object, Function], required: false, default: "button" },
+  as: { type: null, required: false, default: "button" },
 });
 </script>
 
