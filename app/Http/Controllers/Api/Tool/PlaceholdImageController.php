@@ -21,6 +21,8 @@ class PlaceholdImageController extends BaseController
             'bg' => $request['bg'],
         ]);
 
-        return response()->file($img);
+        return response()->file($img, [
+            'Cache-Control' => 'no-store',
+        ]);
     }
 }
