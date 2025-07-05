@@ -14,11 +14,14 @@ import { ref } from 'vue';
 import { toolApi } from '@/api/toolApi';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useClipboard } from '@vueuse/core';
+import { useTitle } from '@vueuse/core'
 
 const isSubmit = ref(false)
 const isRandom = ref(false)
 const imgUrl = ref(null)
 const { copy, isSupported } = useClipboard({ imgUrl })
+
+useTitle("Placehold Image Generator")
 
 const form = useForm({
   initialValues: {
