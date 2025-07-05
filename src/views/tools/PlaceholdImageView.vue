@@ -16,6 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useClipboard } from '@vueuse/core';
 
 const isSubmit = ref(false)
+const isRandom = ref(false)
 const imgUrl = ref(null)
 const { copy, isSupported } = useClipboard({ imgUrl })
 
@@ -24,8 +25,8 @@ const form = useForm({
     width: 200,
     height: 200,
     text: '',
-    color: '#000000',
-    bg: '#FFFFFF',
+    color: '#FFFFFF',
+    bg: '#000000',
   },
 })
 
@@ -47,6 +48,25 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
 })
 
+const onRandom = async () => {
+  isRandom.value = true
+
+  try {
+    const res = await toolApi.getRandomPlaceholdImage()
+    const resData = res.data
+    const placeholdImage = resData.data.placehold_image
+
+    form.setValues(placeholdImage.params_formatted)
+    imgUrl.value = placeholdImage.url
+    
+  } catch (error) {
+    console.log(error);
+    
+  } finally {
+    isRandom.value = false
+  }
+}
+
 </script>
 
 <template>
@@ -55,6 +75,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       <CardHeader>
         <CardTitle>Placehold Image</CardTitle>
       </CardHeader>
+
       <CardContent>
         <form @submit="onSubmit">
           <div class="grid grid-cols-[110px_auto] items-center mb-3">
@@ -125,10 +146,15 @@ const onSubmit = form.handleSubmit(async (values) => {
             </FormField>
           </div>
 
-          <div class="flex justify-center mt-6">
+          <div class="flex items-center justify-center mt-6 gap-3">
             <Button type="submit" :disabled="isSubmit">
               <Loader2 class="w-4 h-4 mr-1 animate-spin" v-if="isSubmit" />
               Generate
+            </Button>
+
+            <Button type="button" :disabled="isRandom" @click="onRandom">
+              <Loader2 class="w-4 h-4 mr-1 animate-spin" v-if="isRandom" />
+              Random
             </Button>
           </div>
         </form>
@@ -147,8 +173,15 @@ const onSubmit = form.handleSubmit(async (values) => {
               </PopoverContent>
             </Popover>
           </div>
-          <div class="border rounded-sm p-2 flex justify-center items-center">
+          <div class="border rounded-sm p-2 flex justify-center items-center mb-3">
             <img :src="imgUrl" alt="PlaceholdImage" class="max-h-[400px] w-auto">
+          </div>
+          <div class="flex justify-end">
+            <Button as-child="">
+              <a :href="imgUrl" target="_blank">
+                Download
+              </a>
+            </Button>
           </div>
         </div>
       </CardContent>
