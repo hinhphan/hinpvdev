@@ -32,7 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         // For API
         $exceptions->render(function (Exception $e, Request $request) {
-            if ($request->expectsJson() || $request->is('api/*')) {
+            if ($request->expectsJson() || $request->is('api/*') || $request->is('pi')) {
                 $code = ResponseCode::INTERNAL_SERVER_ERROR;
                 $message = __('messages.' . ResponseCode::INTERNAL_SERVER_ERROR);
                 $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
