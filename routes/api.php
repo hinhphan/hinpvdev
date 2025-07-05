@@ -7,6 +7,9 @@ Route::prefix('v1')->group(function () {
     Route::prefix('tools')->group(function () {
         // Placehold Image
         
+        // Opensource Audio
+
+        // Opensource Image
     });
 
     Route::middleware(['auth:api'])->group(function () {
