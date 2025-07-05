@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\Tool;
 
 use App\Http\Requests\Api\BaseRequest;
 
-class PreviewPlaceholdImageRequest extends BaseRequest
+class CreatePlaceholdImageRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,10 +14,10 @@ class PreviewPlaceholdImageRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'w' => 'required|int|min:0|max:5000',
-            'h' => 'required|int|min:0|max:5000',
-            'txt' => 'nullable|string|max:50',
-            'c' => 'nullable|hex_color',
+            'width' => 'required|int|min:0|max:5000',
+            'height' => 'required|int|min:0|max:5000',
+            'text' => 'nullable|string|max:50',
+            'color' => 'nullable|hex_color',
             'bg' => 'nullable|hex_color',
         ];
     }

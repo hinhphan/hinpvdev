@@ -9,4 +9,4 @@ Route::get('/', function () {
 
 // Shortlink
 // Placehold Image
-Route::get('pi', [PlaceholdImageController::class, 'preview'])->name('get.placehold.image.preview');
+Route::get('pi/{id}', [PlaceholdImageController::class, 'preview'])->name('get.placehold.image.preview');

@@ -3,24 +3,40 @@
 namespace App\Http\Controllers\Api\Tool;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Requests\Api\Tool\PreviewPlaceholdImageRequest;
+use App\Http\Requests\Api\Tool\CreatePlaceholdImageRequest;
+use App\Http\Resources\PlaceholdImageResource;
+use App\Models\PlaceholdImage;
 use App\Traits\JsonRespondController;
 use Illuminate\Http\Request;
 use App\Services\PlaceholdImage\ImageGeneratorService;
+use App\Services\PlaceholdImage\CreatePlaceholdImageService;
+use Illuminate\Support\Arr;
 
 class PlaceholdImageController extends BaseController
 {
     use JsonRespondController;
 
-    public function preview(PreviewPlaceholdImageRequest $request) {
+    public function preview(int $id) {
+        $placeholdImage = PlaceholdImage::findOrFail($id);
+        $params = Arr::from(json_decode($placeholdImage->params));
+        
         $img = app(ImageGeneratorService::class)->execute([
-            'width' => $request['w'],
-            'height' => $request['h'],
-            'text' => $request['txt'],
-            'color' => $request['c'],
-            'bg' => $request['bg'],
+            'width' => $params['width'],
+            'height' => $params['height'],
+            'text' => $params['text'] ?? null,
+            'color' => $params['color'] ?? null,
+            'bg' => $params['bg'] ?? null,
         ]);
 
         return response()->file($img);
+    }
+
+    public function create(CreatePlaceholdImageRequest $request) {
+        $placeholdImage = app(CreatePlaceholdImageService::class)
+            ->execute($request->validated());
+
+        return $this->responseSuccess([
+            'placehold_image' => new PlaceholdImageResource($placeholdImage),
+        ]);
     }
 }

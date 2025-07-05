@@ -4,13 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     // Tools
-    Route::prefix('tools')->group(function () {
-        // Placehold Image
-        
-        // Opensource Audio
+    // Placehold Image
+    Route::post('placehold-images', [PlaceholdImageController::class, 'create']);
 
-        // Opensource Image
-    });
+    // Opensource Audio
+
+    // Opensource Image
 
     Route::middleware(['auth:api'])->group(function () {
         
