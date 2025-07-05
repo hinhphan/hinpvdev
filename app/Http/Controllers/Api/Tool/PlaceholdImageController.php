@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Tool;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Requests\Api\Tool\PlaceholdImageRequest;
+use App\Http\Requests\Api\Tool\PreviewPlaceholdImageRequest;
 use App\Traits\JsonRespondController;
 use Illuminate\Http\Request;
 use App\Services\PlaceholdImage\ImageGeneratorService;
@@ -12,7 +12,7 @@ class PlaceholdImageController extends BaseController
 {
     use JsonRespondController;
 
-    public function preview(PlaceholdImageRequest $request) {
+    public function preview(PreviewPlaceholdImageRequest $request) {
         $img = app(ImageGeneratorService::class)->execute([
             'width' => $request['w'],
             'height' => $request['h'],
@@ -21,8 +21,6 @@ class PlaceholdImageController extends BaseController
             'bg' => $request['bg'],
         ]);
 
-        return response()->file($img, [
-            'Cache-Control' => 'no-store',
-        ]);
+        return response()->file($img);
     }
 }

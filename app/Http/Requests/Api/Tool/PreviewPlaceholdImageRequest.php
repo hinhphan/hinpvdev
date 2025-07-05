@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\Tool;
 
 use App\Http\Requests\Api\BaseRequest;
 
-class PlaceholdImageRequest extends BaseRequest
+class PreviewPlaceholdImageRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
