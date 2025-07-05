@@ -17,6 +17,7 @@ class PlaceholdImageResource extends JsonResource
         return [
             'id' => $this->id,
             'params' => $this->params,
+            'params_formatted' => json_decode($this->params),
             'url' => route('get.placehold.image.preview', [
                 'id' => $this->id,
             ]),

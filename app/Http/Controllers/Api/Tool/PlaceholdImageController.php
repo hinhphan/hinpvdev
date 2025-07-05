@@ -39,4 +39,12 @@ class PlaceholdImageController extends BaseController
             'placehold_image' => new PlaceholdImageResource($placeholdImage),
         ]);
     }
+
+    public function random() {
+        $randomPlaceholdImage = PlaceholdImage::inRandomOrder(now()->timestamp)->firstOrFail();
+
+        return $this->responseSuccess([
+            'placehold_image' => new PlaceholdImageResource($randomPlaceholdImage),
+        ]); 
+    }
 }
