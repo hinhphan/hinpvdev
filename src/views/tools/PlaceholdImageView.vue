@@ -6,31 +6,52 @@ import {
   CardTitle,
   CardContent,
 } from '@/components/ui/card'
-import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { toolApi } from '@/api/toolApi';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useClipboard } from '@vueuse/core';
 import { useTitle } from '@vueuse/core'
+import { Checkbox } from '@/components/ui/checkbox';
+import { useHandleApiError } from '@/composables/handleApiError';
 
-const isSubmit = ref(false)
-const isRandom = ref(false)
-const imgUrl = ref(null)
-const { copy, isSupported } = useClipboard({ imgUrl })
-
+// Common
 useTitle("Placehold Image Generator")
 
+const imgUrl = ref(null)
+const { copy, isSupported } = useClipboard({ imgUrl })
+const { setError, errors } = useHandleApiError()
+
+watch(errors.value, () => {
+  form.setErrors(errors.value)
+})
+
+// Sumit Form
+const isSubmit = ref(false)
 const form = useForm({
   initialValues: {
     width: 200,
     height: 200,
-    text: '',
+    text: '200 x 200',
     color: '#FFFFFF',
     bg: '#000000',
+    is_use_size_as_text: true,
   },
+})
+
+watch([
+  () => form.values.width, 
+  () => form.values.height, 
+  () => form.values.is_use_size_as_text
+], ([newWidth, newHeight]) => {
+  if (form.values.is_use_size_as_text) {
+    form.setValues({
+      text: newWidth + ' x ' + newHeight,
+    })
+  }
 })
 
 const onSubmit = form.handleSubmit(async (values) => {
@@ -44,15 +65,21 @@ const onSubmit = form.handleSubmit(async (values) => {
     imgUrl.value = placeholdImage.url
 
   } catch (error) {
-    console.log(error);
+    setError(error)
 
   } finally {
     isSubmit.value = false
   }
 })
 
+// Random Placehold Image
+const isRandom = ref(false)
+
 const onRandom = async () => {
   isRandom.value = true
+  form.setValues({
+    is_use_size_as_text: false,
+  })
 
   try {
     const res = await toolApi.getRandomPlaceholdImage()
@@ -61,10 +88,10 @@ const onRandom = async () => {
 
     form.setValues(placeholdImage.params_formatted)
     imgUrl.value = placeholdImage.url
-    
+
   } catch (error) {
-    console.log(error);
-    
+    setError(error)
+
   } finally {
     isRandom.value = false
   }
@@ -91,7 +118,6 @@ const onRandom = async () => {
                       <Input type="number" v-bind="componentField" />
                     </FormControl>
                   </div>
-                  <FormMessage />
                 </FormItem>
               </FormField>
               <span>x</span>
@@ -102,7 +128,6 @@ const onRandom = async () => {
                       <Input type="number" v-bind="componentField" />
                     </FormControl>
                   </div>
-                  <FormMessage />
                 </FormItem>
               </FormField>
               <span>px</span>
@@ -116,10 +141,9 @@ const onRandom = async () => {
                 <FormItem class="grow">
                   <div class="flex items-center gap-3">
                     <FormControl>
-                      <Input type="text" v-bind="componentField" />
+                      <Input type="text" v-bind="componentField" :disabled="form.values.is_use_size_as_text" />
                     </FormControl>
                   </div>
-                  <FormMessage />
                 </FormItem>
               </FormField>
               <FormField v-slot="{ componentField }" name="color">
@@ -129,10 +153,23 @@ const onRandom = async () => {
                       <Input type="color" v-bind="componentField" />
                     </FormControl>
                   </div>
-                  <FormMessage />
                 </FormItem>
               </FormField>
             </div>
+          </div>
+
+          <div class="grid grid-cols-[110px_auto] items-center mb-3">
+            <label></label>
+            <FormField v-slot="{ value, handleChange }" type="checkbox" name="is_use_size_as_text">
+              <FormItem class="flex flex-row items-start gap-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox :model-value="value" @update:model-value="handleChange" />
+                </FormControl>
+                <div class="space-y-1 leading-none">
+                  <FormLabel>Use the size as text</FormLabel>
+                </div>
+              </FormItem>
+            </FormField>
           </div>
 
           <div class="grid grid-cols-[110px_auto] items-center">
@@ -144,7 +181,6 @@ const onRandom = async () => {
                     <Input type="color" v-bind="componentField" />
                   </FormControl>
                 </div>
-                <FormMessage />
               </FormItem>
             </FormField>
           </div>
