@@ -7,7 +7,8 @@ use App\Services\BaseService;
 use Exception;
 use Illuminate\Http\File;
 
-class ImageGeneratorService extends BaseService {
+class ImageGeneratorService extends BaseService
+{
 
     /**
      * Get the validation rules that apply to the service.
@@ -24,13 +25,15 @@ class ImageGeneratorService extends BaseService {
             'bg' => 'nullable|hex_color',
         ];
     }
-    
-    public function execute(array $data): File {
+
+    public function execute(array $data): File
+    {
         $this->validate($data);
 
         $img = @imagecreate($data['width'], $data['height']);
 
-        if ($img === false) throw new Exception('Can\'t create image.');
+        if ($img === false)
+            throw new Exception('Can\'t create image.');
 
         // Background
         $bg = ColorHelper::hexToRgb($data['bg'] ?? '#FFFFFF');
@@ -41,16 +44,19 @@ class ImageGeneratorService extends BaseService {
         $textColor = imagecolorallocate($img, $color['r'], $color['g'], $color['b']);
 
         // Text
-        $fontPath = public_path('fonts/MSGothic.ttf');
+        $fontPath = public_path('fonts/NotoSansJP.ttf');
         $text = $data['text'] ?? '';
-        $fontSize = $this->getMaxFontSize($text, $fontPath, $data['width'] - 20, $data['height'] - 20);
-        $box = imagettfbbox($fontSize, 0, $fontPath, $text);
-        $textWidth = abs($box[2] - $box[0]);
-        $textHeight = abs($box[5] - $box[1]);
-        $x = ($data['width'] - $textWidth) / 2;
-        $y = ($data['height'] + $textHeight) / 2;
+        
+        if (!empty($text)) {
+            $fontSize = $this->getMaxFontSize($text, $fontPath, $data['width'], $data['height']);
+            $box = imagettfbbox($fontSize, 0, $fontPath, $text);
+            $textWidth = abs($box[2] - $box[0]);
+            $textHeight = abs($box[5] - $box[1]);
+            $x = ($data['width'] - $textWidth) / 2;
+            $y = ($data['height'] + $textHeight) / 2;
 
-        imagettftext($img, $fontSize, 0, $x, $y, $textColor, $fontPath, $text);
+            imagettftext($img, $fontSize, 0, $x, $y, $textColor, $fontPath, $text);
+        }
 
         // Output File
         $tmpPath = tempnam(sys_get_temp_dir(), 'img_') . '.png';
@@ -61,16 +67,21 @@ class ImageGeneratorService extends BaseService {
         return new File($tmpPath);
     }
 
-    protected function getMaxFontSize($text, $fontPath, $maxWidth, $maxHeight, $min = 5, $max = 100) {
-        for ($size = $min; $size <= $max; $size++) {
-            $box = imagettfbbox($size, 0, $fontPath, $text);
-            $textWidth = abs($box[2] - $box[0]);
-            $textHeight = abs($box[5] - $box[1]);
+    protected function getMaxFontSize($text, $fontPath, $maxWidth, $maxHeight)
+    {
+        $fontSize = 0;
+        $textBoxWidth = $maxWidth * 0.8;
+        $textBoxHeight = $maxHeight * 0.8;
+        $currentTextBoxWidth = 0;
+        $currentTextBoxHeight = 0;
 
-            if ($textWidth > $maxWidth || $textHeight > $maxHeight) {
-                return $size - 1;
-            }
+        while ($currentTextBoxWidth < $textBoxWidth && $currentTextBoxHeight < $textBoxHeight) {
+            $box = imagettfbbox($fontSize, 0, $fontPath, $text);
+            $currentTextBoxWidth = abs($box[2] - $box[0]);
+            $currentTextBoxHeight = abs($box[7] - $box[1]);
+            $fontSize++;
         }
-    return $max;
-}
+
+        return $fontSize;
+    }
 }
