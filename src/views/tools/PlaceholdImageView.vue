@@ -6,7 +6,7 @@ import {
   CardTitle,
   CardContent,
 } from '@/components/ui/card'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
