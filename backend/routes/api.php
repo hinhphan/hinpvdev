@@ -19,6 +19,9 @@ Route::prefix('v1')->group(function () {
     // Opensource Image
 
     Route::middleware(['auth:api'])->group(function () {
-        
+        // Me
+        Route::group(['prefix' => 'me'], function () {
+            Route::get('/basic-info', [MeController::class, 'basicInfo']);
+        });
     });
 });
