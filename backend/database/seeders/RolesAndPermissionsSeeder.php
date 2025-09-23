@@ -19,6 +19,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Admin',
                 'description' => 'Administrator with full permissions',
+                'is_admin' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
