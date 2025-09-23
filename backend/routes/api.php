@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\Tool\PlaceholdImageController;
 use Illuminate\Support\Facades\Route;
 

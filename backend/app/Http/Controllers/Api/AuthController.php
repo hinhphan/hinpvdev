@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
-use App\Traits\JsonRespondController;
 use App\Traits\TokenCookie;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,7 +19,7 @@ use Throwable;
 
 class AuthController extends BaseController
 {
-    use JsonRespondController, TokenCookie;
+    use TokenCookie;
 
     /**
      * Summary of loginEmail
