@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RequireSeeder::class,
-            OptionalSeeder::class,
+            // RequireSeeder::class,
+            // OptionalSeeder::class,
         ]);
     }
 }

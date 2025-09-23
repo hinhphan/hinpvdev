@@ -1,8 +1,14 @@
 <?php
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Tool\PlaceholdImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
+    // Login
+    Route::post('login', [AuthController::class, 'login']);
+    // Logout
+    Route::post('logout', [AuthController::class, 'logout']);
+
     // Tools
     // Placehold Image
     Route::post('placehold-images', [PlaceholdImageController::class, 'create']);

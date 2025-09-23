@@ -11,6 +11,8 @@ class OptionalSeeder extends Seeder
      */
     public function run(): void
     {
-
+        $this->call([
+            AuthSeeder::class
+        ]);
     }
 }
