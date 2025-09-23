@@ -11,9 +11,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->isProduction()) {
+            $this->command->warn('Seeding in production environment is not allowed.');
+            return;
+        }
+
         $this->call([
-            // RequireSeeder::class,
-            // OptionalSeeder::class,
+            RequireSeeder::class,
+            OptionalSeeder::class,
         ]);
     }
 }

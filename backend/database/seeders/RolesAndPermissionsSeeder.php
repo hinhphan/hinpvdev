@@ -2,37 +2,33 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
-class AuthSeeder extends Seeder
+class RolesAndPermissionsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        User::query()->delete();
-
-        User::insert([
+        // Role
+        Role::query()->delete();
+        Role::insert([
             [
                 'id' => 1,
                 'name' => 'Admin',
-                'email' => 'admin@example.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('12345678'),
+                'description' => 'Administrator with full permissions',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'id' => 2,
-                'name' => 'Guest User',
-                'email' => 'guest@example.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('12345678'),
+                'name' => 'Guest',
+                'description' => 'Guest user with limited permissions',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
+            ]
         ]);
     }
 }

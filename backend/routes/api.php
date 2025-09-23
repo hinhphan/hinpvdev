@@ -9,6 +9,8 @@ Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     // Logout
     Route::post('logout', [AuthController::class, 'logout']);
+    // Refresh Token
+    Route::post('refresh-token', [AuthController::class, 'refreshToken']);
 
     // Tools
     // Placehold Image
