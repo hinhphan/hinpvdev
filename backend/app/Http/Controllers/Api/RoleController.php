@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\Pagination\PaginationRequest;
 use Illuminate\Http\Request;
 use App\Services\Role\CreateRole;
 
@@ -10,9 +11,9 @@ class RoleController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PaginationRequest $request)
     {
-        //
+        
     }
 
     /**
@@ -20,7 +21,7 @@ class RoleController extends BaseController
      */
     public function store(Request $request)
     {
-        app(CreateRole::class)->execute($request->all());
+        // app(CreateRole::class)->execute($request->all());
     }
 
     /**
