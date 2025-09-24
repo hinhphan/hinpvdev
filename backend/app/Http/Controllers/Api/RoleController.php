@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\Pagination\PaginationRequest;
+use App\Http\Resources\Pagination\PaginationResource;
+use App\Http\Resources\Role\RoleResource;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Services\Role\CreateRole;
 
@@ -13,7 +16,12 @@ class RoleController extends BaseController
      */
     public function index(PaginationRequest $request)
     {
-        
+        $roles = Role::paginate($request->getPaginationSize());
+
+        return $this->responseSuccess([
+            'pagination' => new PaginationResource($roles),
+            'items' => RoleResource::collection($roles)
+        ]);
     }
 
     /**

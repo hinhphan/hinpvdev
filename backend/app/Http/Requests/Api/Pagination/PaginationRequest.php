@@ -27,4 +27,9 @@ class PaginationRequest extends BaseRequest
             ],
         ];
     }
+
+    public function getPaginationSize()
+    {
+        return $this->input('size', config('constants.pagination_default_size', 10));
+    }
 }

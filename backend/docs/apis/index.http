@@ -25,6 +25,14 @@ Authorization: Bearer {{accessToken}}
 
 ###
 
+# @name getRoles
+GET {{host}}/roles?page=1&size=10
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+
 # @name createRole
 POST {{host}}/roles
 Content-Type: application/json
