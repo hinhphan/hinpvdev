@@ -10,4 +10,5 @@ class ResponseCode {
     public const BAD_REQUEST = '400000';
     public const SUCCESS = '200000';
     public const UNAUTHORIZED = '400001';
+    public const FORBIDDEN = '400003';
 }

@@ -6,13 +6,14 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "email": "admin@example.com",
+    "email": "guest@example.com",
     "password": "12345678"
 }
 
 ###
 
 @accessToken = {{login.response.body.data.access_token}}
+@refreshToken = {{login.response.body.data.refresh_token}}
 
 ###
 

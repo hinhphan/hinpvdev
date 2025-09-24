@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\ServiceAccessForbiddenException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -65,6 +66,13 @@ return Application::configure(basePath: dirname(__DIR__))
                     $code = ResponseCode::UNAUTHORIZED;
                     $message = __('messages.' . ResponseCode::UNAUTHORIZED);
                     $statusCode = Response::HTTP_UNAUTHORIZED;
+                }
+
+                // ForbiddenHttpException
+                if ($e instanceof ServiceAccessForbiddenException) {
+                    $code = ResponseCode::FORBIDDEN;
+                    $message = __('messages.' . ResponseCode::FORBIDDEN);
+                    $statusCode = Response::HTTP_FORBIDDEN;
                 }
 
                 // Global Log

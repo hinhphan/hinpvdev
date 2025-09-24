@@ -2,27 +2,11 @@
 
 namespace App\Services;
 
+use App\Traits\CheckServiceAccess;
 use Illuminate\Support\Facades\Validator;
 
 class BaseService {
-
-    /**
-     * Summary of featureName
-     * @var string
-     */
-    protected $featureCode = '';
-
-    /**
-     * Summary of permissionCode
-     * @var string
-     */
-    protected $permissionCode = '';
-
-    /**
-     * Summary of skipCheckPermission
-     * @var bool
-     */
-    protected $skipCheckPermission = false;
+    use CheckServiceAccess;
 
     /**
      * Get the validation rules that apply to the service.
@@ -57,31 +41,5 @@ class BaseService {
     {
         $this->checkPermission();
         $this->validate($data);
-    }
-
-    public function checkPermission(): bool
-    {
-        if ($this->skipCheckPermission) {
-            return true;
-        }
-
-        $features = $this->listFeaturePermissionByAuth();
-
-        return true;
-    }
-
-    private function listFeaturePermissionByAuth(): array
-    {
-        if (!auth()->check()) return [];
-
-        $user = auth()->user();
-        $user->load(['roles.permissions.feature', 'permissions.feature']);
-        $roles = $user->roles;
-ddd($roles);
-        $features = [];
-        $permissions = $user->permissions->concat($roles->pluck('permissions')->all())->groupBy('feature_id');
-ddd($user);
-
-        return $features;
     }
 }

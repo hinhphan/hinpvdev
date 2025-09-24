@@ -27,6 +27,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'id' => 2,
                 'name' => 'Guest',
                 'description' => 'Guest user with limited permissions',
+                'is_admin' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
