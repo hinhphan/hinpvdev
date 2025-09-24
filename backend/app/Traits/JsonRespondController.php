@@ -90,6 +90,13 @@ trait JsonRespondController {
         return $this;
     }
 
+    /**
+     * Summary of response
+     * @param array $data
+     * @param array $errors
+     * @param array $headers
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function response(array $data = [], array $errors = [], array $headers = []) {
         return RespondHepler::formatJsonResponseData(
             $this->code,
@@ -101,6 +108,12 @@ trait JsonRespondController {
         );
     }
 
+    /**
+     * Summary of responseSuccess
+     * @param array $data
+     * @param array $headers
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function responseSuccess(array $data = [], array $headers = []) {
 
         return $this->setCode(ResponseCode::SUCCESS)
@@ -109,6 +122,12 @@ trait JsonRespondController {
             ->response($data, [], $headers);
     }
 
+    /**
+     * Summary of responseBadRequest
+     * @param array $errors
+     * @param array $headers
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function responseBadRequest(array $errors = [], array $headers = []) {
 
         return $this->setCode(ResponseCode::BAD_REQUEST)
