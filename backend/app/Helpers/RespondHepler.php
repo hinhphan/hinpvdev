@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-class RespondHepler {
+class RespondHelper {
     /**
-     * Summary of formatJsonResponseData
+     * Format JSON response data.
      * @param int|string $code
      * @param string $message
      * @param int $statusCode

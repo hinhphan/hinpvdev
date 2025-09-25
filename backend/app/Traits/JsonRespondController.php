@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Enums\ResponseCode;
-use App\Helpers\RespondHepler;
+use App\Helpers\RespondHelper;
 use Symfony\Component\HttpFoundation\Response;
 
 trait JsonRespondController {
@@ -98,7 +98,7 @@ trait JsonRespondController {
      * @return \Illuminate\Http\JsonResponse
      */
     public function response(array $data = [], array $errors = [], array $headers = []) {
-        return RespondHepler::formatJsonResponseData(
+        return RespondHelper::formatJsonResponseData(
             $this->code,
             $this->message,
             $this->statusCode,

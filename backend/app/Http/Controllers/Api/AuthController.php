@@ -22,7 +22,7 @@ class AuthController extends BaseController
     use TokenCookie;
 
     /**
-     * Summary of loginEmail
+     * Summary of login
      * @param \App\Http\Requests\Api\Auth\LoginRequest $request
      * @return mixed
      */

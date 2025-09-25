@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Traits\CheckServiceAccess;
+use App\Traits\CheckAuthorize;
 use Illuminate\Support\Facades\Validator;
 
 class BaseService {
-    use CheckServiceAccess;
+    use CheckAuthorize;
 
     /**
      * Get the validation rules that apply to the service.
@@ -39,7 +39,7 @@ class BaseService {
      */
     public function execute(array $data)
     {
-        $this->checkPermission();
+        $this->checkAuthorize();
         $this->validate($data);
     }
 }

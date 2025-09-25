@@ -40,5 +40,7 @@ Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-
+    "name": "Manager",
+    "description": "",
+    "is_admin": 0
 }

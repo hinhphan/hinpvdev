@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use App\Exceptions\ServiceAccessForbiddenException;
 
-trait CheckServiceAccess
+trait CheckAuthorize
 {
     /**
      * Summary of featureName
@@ -19,15 +19,15 @@ trait CheckServiceAccess
     protected $permissionCode = '';
 
     /**
-     * Summary of skipCheckPermission
+     * Summary of skipCheckAuthorize
      * @var bool
      */
-    protected $skipCheckPermission = false;
+    protected $skipCheckAuthorize = false;
 
-    public function checkPermission()
+    public function checkAuthorize()
     {
-        // Skip check permission if not set featureCode or permissionCode or skipCheckPermission is true
-        if ($this->skipCheckPermission || empty($this->featureCode) || empty($this->permissionCode)) {
+        // Skip check authorization if not set featureCode or permissionCode or skipCheckAuthorize is true
+        if ($this->skipCheckAuthorize || empty($this->featureCode) || empty($this->permissionCode)) {
             return;
         }
 

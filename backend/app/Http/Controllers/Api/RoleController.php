@@ -29,7 +29,9 @@ class RoleController extends BaseController
      */
     public function store(Request $request)
     {
-        // app(CreateRole::class)->execute($request->all());
+        $role = app(CreateRole::class)->execute($request->all());
+
+        return $this->responseSuccess(RoleResource::make($role)->resolve());
     }
 
     /**

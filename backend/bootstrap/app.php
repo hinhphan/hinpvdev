@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Auth\AuthenticationException;
 use App\Enums\ResponseCode;
-use App\Helpers\RespondHepler;
+use App\Helpers\RespondHelper;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -78,7 +78,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 // Global Log
                 Log::error($e);
 
-                return RespondHepler::formatJsonResponseData($code, $message, $statusCode, [], $errors);
+                return RespondHelper::formatJsonResponseData($code, $message, $statusCode, [], $errors);
             }
         });
     })->create();
