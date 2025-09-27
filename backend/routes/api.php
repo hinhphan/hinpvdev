@@ -1,6 +1,5 @@
 <?php
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\Tool\PlaceholdImageController;
@@ -31,7 +30,5 @@ Route::prefix('v1')->group(function () {
 
         // Role
         Route::apiResource('roles', RoleController::class);
-        // Feature
-        Route::apiResource('features', FeatureController::class);
     });
 });
