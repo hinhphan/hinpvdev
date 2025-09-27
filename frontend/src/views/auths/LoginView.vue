@@ -1,8 +1,17 @@
 <script setup>
-import { Button } from '@/components/ui/button'
+import { useTitle } from '@vueuse/core';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
+
+useTitle(t("login"));
+
+
 
 </script>
 
 <template>
-    <Button variant="destructive">Login</Button>
+    <div>
+
+    </div>
 </template>
