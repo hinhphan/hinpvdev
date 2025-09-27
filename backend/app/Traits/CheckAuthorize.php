@@ -24,23 +24,31 @@ trait CheckAuthorize
      */
     protected $skipCheckAuthorize = false;
 
-    public function checkAuthorize()
+    public function checkAuthorize(bool $isThrowException = true)
     {
         // Skip check authorization if not set featureCode or permissionCode or skipCheckAuthorize is true
         if ($this->skipCheckAuthorize || empty($this->featureCode) || empty($this->permissionCode)) {
-            return;
+            return true;
         }
 
         // Check if user is authenticated
         if (!auth()->check()) {
-            throw new ServiceAccessForbiddenException();
+            if ($isThrowException) {
+                throw new ServiceAccessForbiddenException();
+            }
+            return false;
         }
 
         $user = auth()->user();
 
         // Check if user has permission
         if (!$user->hasPermission($this->featureCode, $this->permissionCode)) {
-            throw new ServiceAccessForbiddenException();
+            if ($isThrowException) {
+                throw new ServiceAccessForbiddenException();
+            }
+            return false;
         }
+
+        return true;
     }
 }

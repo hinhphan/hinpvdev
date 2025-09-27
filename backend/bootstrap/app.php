@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Auth\AuthenticationException;
@@ -69,7 +70,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 }
 
                 // ForbiddenHttpException
-                if ($e instanceof ServiceAccessForbiddenException) {
+                if ($e instanceof ServiceAccessForbiddenException || $e instanceof AccessDeniedHttpException) {
                     $code = ResponseCode::FORBIDDEN;
                     $message = __('messages.' . ResponseCode::FORBIDDEN);
                     $statusCode = Response::HTTP_FORBIDDEN;

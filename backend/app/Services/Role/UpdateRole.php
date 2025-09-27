@@ -8,8 +8,14 @@ use App\Models\Role;
 use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 
-class CreateRole extends BaseService
+class UpdateRole extends BaseService
 {
+    /**
+     * The ID of the role to update.
+     * @var int | null
+     */
+    protected $roleId = null;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -18,11 +24,16 @@ class CreateRole extends BaseService
     public function rules()
     {
         return [
+            'id' => [
+                'required',
+                'integer',
+                'exists:roles,id'
+            ],
             'name' => [
                 'required',
                 'string',
                 'max:100',
-                'unique:roles,name'
+                'unique:roles,name,' . $this->roleId
             ],
             'description' => [
                 'nullable',
@@ -37,12 +48,18 @@ class CreateRole extends BaseService
 
     public function execute(array $data): Role
     {
+        $this->roleId = $data['id'];
+
         $this->validate($data);
 
-        return Role::create([
+        $role = Role::findOrFail($data['id']);
+
+        $role->update([
             'name' => $data['name'],
             'description' => ArrayValueHelper::nullOrValue($data, 'description'),
             'is_admin' => ArrayValueHelper::valueOrBoolean($data, 'is_admin'),
         ]);
+
+        return $role;
     }
 }

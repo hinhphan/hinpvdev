@@ -26,7 +26,7 @@ Authorization: Bearer {{accessToken}}
 ###
 
 # @name getRoles
-GET {{host}}/roles?page=1&size=10
+GET {{host}}/roles?page=1&size=10&sort=-created_at
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{accessToken}}
@@ -40,7 +40,38 @@ Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "Viewer",
+    "name": "Role001",
     "description": "",
     "is_admin": 0
 }
+
+###
+
+# @name getRole
+GET {{host}}/roles/24
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+
+# @name updateRole
+PUT {{host}}/roles/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "name": "Role001 Updated",
+    "is_admin": 0
+}
+
+###
+
+# @name destroyRole
+DELETE {{host}}/roles/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
