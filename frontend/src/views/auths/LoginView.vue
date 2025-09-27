@@ -7,7 +7,6 @@ const { t } = useI18n()
 useTitle(t("login"));
 
 
-
 </script>
 
 <template>
