@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Feature;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
 
@@ -32,5 +34,36 @@ class RolesAndPermissionsSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ]);
+
+        // Feature && Permission
+        Feature::query()->delete();
+        Permission::query()->delete();
+        $features = config('permissions');
+        $featureId = 1;
+        $permissionId = 1;
+
+        foreach ($features as $featureCode => $permissions) {
+            Feature::insert([
+                'id'=> $featureId,
+                'code' => $featureCode,
+                'name' => ucwords(str_replace('_', ' ', strtolower($featureCode))),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            foreach ($permissions as $permission) {
+                Permission::insert([
+                    'id'=> $permissionId,
+                    'feature_id' => $featureId,
+                    'action' => $permission,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                $permissionId++;
+            }
+
+            $featureId++;
+        }
     }
 }

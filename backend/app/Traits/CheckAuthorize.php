@@ -24,8 +24,18 @@ trait CheckAuthorize
      */
     protected $skipCheckAuthorize = false;
 
-    public function checkAuthorize(bool $isThrowException = true)
+    public function checkAuthorize(bool $isThrowException = true, string $featureCode = '', string $permissionCode = '')
     {
+        // Override featureCode and permissionCode if provided
+        if (!empty($featureCode)) {
+            $this->featureCode = $featureCode;
+        }
+
+        // Override permissionCode if provided
+        if (!empty($permissionCode)) {
+            $this->permissionCode = $permissionCode;
+        }
+
         // Skip check authorization if not set featureCode or permissionCode or skipCheckAuthorize is true
         if ($this->skipCheckAuthorize || empty($this->featureCode) || empty($this->permissionCode)) {
             return true;

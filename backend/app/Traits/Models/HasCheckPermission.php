@@ -13,7 +13,7 @@ trait HasCheckPermission
      * @param string $permissionCode
      * @return bool
      */
-    public function hasPermission(string $featureCode, string $permissionCode = null): bool
+    public function hasPermission(string $featureCode, string $permissionCode = ''): bool
     {
         $this->load(['roles.permissions.feature', 'permissions.feature']);
 
@@ -36,7 +36,7 @@ trait HasCheckPermission
         $actions = Arr::pluck($permissions, 'action');
 
         // If permission code not exists, deny permission
-        if ($permissionCode && !in_array($permissionCode, $actions)) {
+        if (!empty($permissionCode) && !in_array($permissionCode, $actions)) {
             return false;
         }
 

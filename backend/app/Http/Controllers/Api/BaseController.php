@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Traits\CheckAuthorize;
 use App\Traits\JsonRespondController;
 
 class BaseController extends Controller
 {
-    use JsonRespondController;
+    use JsonRespondController, CheckAuthorize;
 
     /**
      * Default sort column
