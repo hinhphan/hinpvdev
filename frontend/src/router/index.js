@@ -18,6 +18,14 @@ const router = createRouter({
     ...authRoutes,
     ...toolRoutes,
     {
+      path: '/node',
+      name: 'node',
+      component: () => import('../views/nodes/NodeView.vue'),
+      meta: {
+        layout: 'EmptyLayout',
+      },
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('../views/errors/NotFoundView.vue'),

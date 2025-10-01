@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MeController;
+use App\Http\Controllers\Api\NodeController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\Tool\PlaceholdImageController;
 use Illuminate\Support\Facades\Route;
@@ -30,5 +31,8 @@ Route::prefix('v1')->group(function () {
 
         // Role
         Route::apiResource('roles', RoleController::class);
+
     });
+    // Node
+    Route::apiResource('nodes', NodeController::class);
 });

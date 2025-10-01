@@ -29,7 +29,17 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->redirectGuestsTo(function(Request $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                // AuthenticationException
+                $code = ResponseCode::UNAUTHORIZED;
+                $message = __('messages.' . ResponseCode::UNAUTHORIZED);
+                $statusCode = Response::HTTP_UNAUTHORIZED;
+
+                return RespondHelper::formatJsonResponseData($code, $message, $statusCode, []);
+            }
+        });
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // For API
