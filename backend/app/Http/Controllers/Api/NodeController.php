@@ -6,6 +6,8 @@ use App\Http\Resources\Node\NodeResource;
 use App\Models\Node;
 use Illuminate\Http\Request;
 use App\Services\Node\CreateNode;
+use App\Services\Node\UpdateNode;
+use App\Services\Node\DestroyNode;
 
 class NodeController extends BaseController
 {
@@ -35,7 +37,8 @@ class NodeController extends BaseController
      */
     public function show(string $id)
     {
-        //
+        $node = Node::findOrFail($id);
+        return $this->responseSuccess(NodeResource::make($node)->resolve());
     }
 
     /**
@@ -43,7 +46,8 @@ class NodeController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $node = app(UpdateNode::class)->execute([...$request->all(), ...['id' => $id]]);
+        return $this->responseSuccess(NodeResource::make($node)->resolve());
     }
 
     /**
@@ -51,6 +55,7 @@ class NodeController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        app(DestroyNode::class)->execute(['id' => $id]);
+        return $this->responseSuccess();
     }
 }

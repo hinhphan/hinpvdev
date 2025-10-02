@@ -75,3 +75,53 @@ Accept: application/json
 Authorization: Bearer {{accessToken}}
 
 ###
+
+# @name getNodes
+GET {{host}}/nodes
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+
+# @name createNode
+POST {{host}}/nodes
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "label": "Node001",
+    "description": "Description for Node001"
+}
+
+###
+
+# @name getNode
+GET {{host}}/nodes/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
+
+# @name updateNode
+PUT {{host}}/nodes/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "label": "Node001 Updated",
+    "description": "Description for Node001 Updated"
+}
+
+###
+
+# @name destroyNode
+DELETE {{host}}/nodes/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+###
