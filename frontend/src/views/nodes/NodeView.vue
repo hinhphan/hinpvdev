@@ -1,48 +1,45 @@
 <script setup>
 import { nodeApi } from '@/api/nodeApi'
 import * as vis from 'vis-network/dist/vis-network'
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 
 const listNode = ref([])
+const listEdge = ref([])
+const networkContainerRef = useTemplateRef('networkContainer')
+const nodeDataSets = computed(() => {
+    return new vis.DataSet(listNode.value.map((item) => ({
+        id: item.id,
+        label: item.label,
+    })))
+})
+
+const edgeDataSets = computed(() => {
+    return new vis.DataSet(listEdge.value.map((item) => ({
+        from: item.from,
+        to: item.to,
+    })))
+})
 
 const fetchNodes = async () => {
-    const res = await nodeApi.listNode()
-    const resData = res.data
+    try {
+        const res = await nodeApi.listNode()
+        const resData = res.data
 
-    console.log(resData);
-    
+        listNode.value = resData.data.items
+    } catch (error) {
+        console.error(error)
+        alert('Failed to fetch nodes')
+    }
 }
 
-fetchNodes()
+onMounted(async () => {
+    await fetchNodes()
 
-// var nodes = new vis.DataSet([
-//     { id: 1, label: "Node 1" },
-//     { id: 2, label: "Node 2" },
-//     { id: 3, label: "Node 3" },
-//     { id: 4, label: "Node 4" },
-//     { id: 5, label: "Node 5" },
-// ])
-
-// var edges = new vis.DataSet([
-//     { from: 1, to: 3 },
-//     { from: 1, to: 2 },
-//     { from: 2, to: 4 },
-//     { from: 2, to: 5 },
-//     { from: 3, to: 3 },
-// ])
-
-// var data = {
-//     nodes: nodes,
-//     edges: edges,
-// }
-
-// var options = {}
-// const container = useTemplateRef('networkContainer')
-
-
-// onMounted(() => {
-//     new vis.Network(container.value, data, options)
-// })
+    new vis.Network(networkContainerRef.value, {
+        nodes: nodeDataSets.value,
+        edges: edgeDataSets.value,
+    }, {})
+})
 
 </script>
 
