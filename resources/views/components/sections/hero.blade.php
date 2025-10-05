@@ -1,4 +1,5 @@
 <div class="relative px-4 pt-8 md:pt-16 pb-6">
+    {{-- Hero Title --}}
     <div class="flex items-end gap-x-2 mb-6 md:mb-[26px]">
         <h2 class="font-bold text-3xl md:text-5xl">Mingalaba</h2>
         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,6 +19,8 @@
             </defs>
         </svg>
     </div>
+
+    {{-- Hero Description --}}
     <div>
         <p class="font-light text-base leading-[150%] mb-2 md:mb-4">
             AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro blog theme. This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured.
