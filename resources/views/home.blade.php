@@ -1,7 +1,11 @@
-<x-layout>
+<x-layouts.master>
     <x-slot:title>
         Home
     </x-slot:title>
 
-    Home
-</x-layout>
+    <x-sections.hero />
+
+    <x-sections.featured />
+    
+    <x-sections.recent />
+</x-layouts.master>

@@ -66,5 +66,5 @@
             </button>
         </div>
     </div>
-    <div class="absolute bottom-0 left-0 right-0 bg-border h-[1px] md:h-0.5 mx-4"></div>
+    <x-misc.devider-bottom />
 </div>

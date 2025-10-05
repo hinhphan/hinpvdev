@@ -25,10 +25,14 @@
     }
 
     body {
-        @apply font-ibmmono bg-fill text-text-base;
+        @apply font-ibmmono font-normal text-base bg-fill text-text-base;
     }
 
     button {
         @apply cursor-pointer;
+    }
+
+    a {
+        @apply hover:text-accent
     }
 }
