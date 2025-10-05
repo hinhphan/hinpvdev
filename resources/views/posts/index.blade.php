@@ -1,0 +1,22 @@
+<x-layouts.master>
+    <x-slot:title>
+        Posts
+    </x-slot:title>
+
+    <div class="px-4 pt-8 pb-10 md:pb-[92px]">
+        <div class="mb-6">
+            <x-misc.breadcrumb />
+
+            <h2 class="font-semibold text-3xl mb-2">Posts</h2>
+            <p class="italic text-base">All the articles I've posted.</p>
+        </div>
+
+        <div class="flex flex-col gap-y-6">
+            <x-posts.card />
+            <x-posts.card />
+            <x-posts.card />
+        </div>
+    </div>
+
+    <x-misc.pagination />
+</x-layouts.master>
