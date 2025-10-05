@@ -20,17 +20,11 @@
             Post content
         </div>
 
-        <ul class="flex flex-wrap gap-x-3 py-8">
-            <li>
-                <x-misc.tag />
-            </li>
-            <li>
-                <x-misc.tag />
-            </li>
-            <li>
-                <x-misc.tag />
-            </li>
-        </ul>
+        <div class="flex flex-wrap gap-x-3 py-8">
+            <x-misc.tag name="hinpv" url="#" />
+            <x-misc.tag name="laravel" url="#" />
+            <x-misc.tag name="php" url="#" />
+        </div>
 
         <div class="flex flex-col md:flex-row items-center md:justify-between gap-y-6 md:gap-y-0 mb-12">
             <div>

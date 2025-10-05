@@ -5,9 +5,12 @@
 
     <div class="px-4 pt-8 pb-10 md:pb-[92px]">
         <div class="mb-6">
-            <x-misc.breadcrumb />
+            <x-misc.breadcrumb :items="[
+                ['title' => 'Home', 'url' => '#'],
+                ['title' => 'Posts (Page 1)', 'url' => '#']
+            ]" />
 
-            <h2 class="font-semibold text-3xl mb-2">Posts</h2>
+            <h2 class="font-semibold text-2xl md:text-3xl mb-2">Posts</h2>
             <p class="italic text-base">All the articles I've posted.</p>
         </div>
 

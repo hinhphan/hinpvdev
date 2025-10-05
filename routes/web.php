@@ -13,3 +13,11 @@ Route::get('/posts', function () {
 Route::get('/posts/{slug}', function ($slug) {
     return view('posts.show', ['slug' => $slug]);
 });
+
+Route::get('/tags', function () {
+    return view('tags.index');
+});
+
+Route::get('/tags/{slug}', function ($slug) {
+    return view('tags.show', ['slug' => $slug]);
+});
