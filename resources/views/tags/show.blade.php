@@ -6,8 +6,8 @@
     <div class="px-4 pt-8 pb-10 md:pb-[92px]">
         <div class="mb-6">
             <x-misc.breadcrumb :items="[
-                ['title' => 'Home', 'url' => '#'],
-                ['title' => 'Tags', 'url' => '#'],
+                ['title' => 'Home', 'url' => route('home')],
+                ['title' => 'Tags', 'url' => route('tags.index')],
                 ['title' => 'Php', 'url' => '#'],
             ]" />
 
@@ -22,6 +22,6 @@
         </div>
     </div>
 
-    <x-misc.pagination />
+    <x-misc.pagination :currentPage="1" :totalPages="6" prevUrl="#" nextUrl="#" />
 
 </x-layouts.master>

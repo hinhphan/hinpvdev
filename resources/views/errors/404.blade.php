@@ -7,6 +7,6 @@
         <h2 class="font-bold text-9xl leading-[128px] text-accent">404</h2>
         <p class="mb-5">¯\_(ツ)_/¯</p>
         <p class="text-3xl mb-6">Page Not Found</p>
-        <a href="#" class="text-lg underline decoration-dashed underline-offset-4">Go back home</a>
+        <a href="{{ route('home') }}" class="text-lg underline decoration-dashed underline-offset-4">Go back home</a>
     </div>
 </x-layouts.master>

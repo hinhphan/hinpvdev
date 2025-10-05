@@ -2,7 +2,7 @@
     <div class="flex items-center justify-between py-4 md:py-0">
         {{-- Logo --}}
         <h1 class="font-semibold md:font-bold text-xl md:text-2xl leading-[26px]">
-            <a href="#">AstroPaper</a>
+            <a href="{{ route('home') }}">AstroPaper</a>
         </h1>
 
         {{-- Mobile menu toggle --}}
@@ -40,19 +40,19 @@
         {{-- Navigation Links --}}
         <ul class="flex flex-col md:flex-row items-center gap-x-5 gap-y-6">
             <li>
-                <a href="#" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">Posts</a>
+                <a href="{{ route('posts.index') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">Posts</a>
             </li>
             <li>
-                <a href="#" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">Tags</a>
+                <a href="{{ route('tags.index') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">Tags</a>
             </li>
             <li>
-                <a href="#" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">About</a>
+                <a href="{{ route('about') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">About</a>
             </li>
         </ul>
 
         <div class="flex items-center justify-center gap-x-[42px] md:gap-x-5">
             {{-- Search Icon --}}
-            <a href="#" class="group/icon">
+            <a href="{{ route('search') }}" class="group/icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path class="group-hover/icon:fill-accent" d="M19.023 16.977C18.5546 16.5284 18.0988 16.0669 17.656 15.593C17.284 15.215 17.06 14.94 17.06 14.94L14.26 13.603C15.381 12.3316 15.9997 10.695 16 9C16 5.141 12.86 2 9 2C5.14 2 2 5.141 2 9C2 12.859 5.14 16 9 16C10.763 16 12.37 15.34 13.603 14.261L14.94 17.061C14.94 17.061 15.215 17.285 15.593 17.657C15.98 18.02 16.489 18.511 16.977 19.024L18.335 20.416L18.939 21.062L21.06 18.941L20.414 18.337C20.035 17.965 19.529 17.471 19.023 16.977ZM9 14C6.243 14 4 11.757 4 9C4 6.243 6.243 4 9 4C11.757 4 14 6.243 14 9C14 11.757 11.757 14 9 14Z" fill="#EAEDF3"/>
                 </svg>

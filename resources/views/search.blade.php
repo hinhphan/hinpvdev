@@ -5,7 +5,7 @@
 
     <div class="px-4 pt-8 pb-10 md:pb-[92px]">
         <div class="mb-6">
-            <x-misc.breadcrumb :items="[['title' => 'Home', 'url' => '#'], ['title' => 'Search', 'url' => '#']]" />
+            <x-misc.breadcrumb :items="[['title' => 'Home', 'url' => route('home')], ['title' => 'Search', 'url' => '#']]" />
 
             <h2 class="font-semibold text-2xl md:text-3xl mb-2">Search</h2>
             <p class="italic text-base">Search any article ...</p>
