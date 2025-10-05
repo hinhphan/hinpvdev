@@ -21,3 +21,7 @@ Route::get('/tags', function () {
 Route::get('/tags/{slug}', function ($slug) {
     return view('tags.show', ['slug' => $slug]);
 });
+
+Route::get('/about', function () {
+    return view('about');
+});
