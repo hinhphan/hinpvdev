@@ -25,3 +25,11 @@ Route::get('/tags/{slug}', function ($slug) {
 Route::get('/about', function () {
     return view('about');
 });
+
+Route::get('/search', function () {
+    return view('search');
+});
+
+Route::get('/not-found', function () {
+    return view('errors.404');
+});
