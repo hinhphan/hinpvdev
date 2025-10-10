@@ -1,0 +1,1 @@
+<input {{ $attributes->merge(['class' => 'border border-accent p-1 accent-accent']) }}>
