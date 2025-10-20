@@ -47,3 +47,7 @@ Route::middleware(['auth'])->group(function () {
     // Admin
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 });
+
+Route::get('/tool-pdf', function () {
+    return view('tool-pdf');
+});
