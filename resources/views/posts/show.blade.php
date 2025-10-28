@@ -10,7 +10,7 @@
                     <path class="group-hover/icon:stroke-accent" d="M9.25 5L4 10.25L9.25 15.5" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                Go Back
+                {{ __('messages.posts.back_to_posts') }}
             </a>
             <h2 class="font-bold text-2xl text-accent">{{ $post->title }}</h2>
             <x-misc.datetime 
@@ -35,7 +35,7 @@
 
         <div class="flex flex-col md:flex-row items-center md:justify-between gap-y-6 md:gap-y-0 mb-12">
             <div>
-                <p class="italic text-base leading-[150%] mb-[7px]">Share this post on:</p>
+                <p class="italic text-base leading-[150%] mb-[7px]">{{ __('messages.posts.share') }}</p>
                 <x-misc.social-shares />
             </div>
             <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center md:self-end gap-x-2 group/icon w-fit cursor-pointer hover:text-accent transition-colors">
@@ -44,7 +44,7 @@
                     <path class="group-hover/icon:stroke-accent" d="M16 9.25L10.75 4L5.5 9.25" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                Back to Top
+                {{ __('messages.posts.back_to_top') }}
             </button>
         </div>
     </div>

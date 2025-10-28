@@ -1,17 +1,17 @@
 <x-layouts.master>
     <x-slot:title>
-        Posts
+        {{ __('messages.posts.title') }}
     </x-slot:title>
 
     <div class="px-4 pt-8 pb-10 md:pb-[92px]">
         <div class="mb-6">
             <x-misc.breadcrumb :items="[
-                ['title' => 'Home', 'url' => route('home')],
-                ['title' => 'Posts (Page ' . $posts->currentPage() . ')', 'url' => '#']
+                ['title' => __('messages.common.home'), 'url' => route('home')],
+                ['title' => __('messages.posts.title') . ' (' . __('messages.pagination.page') . ' ' . $posts->currentPage() . ')', 'url' => '#']
             ]" />
 
-            <h2 class="font-semibold text-2xl md:text-3xl mb-2">Posts</h2>
-            <p class="italic text-base">All the articles I've posted.</p>
+            <h2 class="font-semibold text-2xl md:text-3xl mb-2">{{ __('messages.posts.title') }}</h2>
+            <p class="italic text-base">{{ __('messages.posts.subtitle') }}</p>
         </div>
 
         @if($posts->count() > 0)
@@ -22,7 +22,7 @@
             </div>
         @else
             <div class="text-center py-12">
-                <p class="text-lg text-gray-400">Chưa có bài viết nào được xuất bản.</p>
+                <p class="text-lg text-gray-400">{{ __('messages.posts.no_posts_found') }}</p>
             </div>
         @endif
     </div>

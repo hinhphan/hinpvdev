@@ -1,17 +1,17 @@
 <x-layouts.master>
     <x-slot:title>
-        Tags
+        {{ __('messages.tags.title') }}
     </x-slot:title>
 
     <div class="px-4 pt-8 pb-12">
         <div class="mb-6">
             <x-misc.breadcrumb :items="[
-                ['title' => 'Home', 'url' => route('home')],
-                ['title' => 'Tags', 'url' => '#']
+                ['title' => __('messages.common.home'), 'url' => route('home')],
+                ['title' => __('messages.tags.title'), 'url' => '#']
             ]" />
 
-            <h2 class="font-semibold text-3xl mb-2">Tags</h2>
-            <p class="italic text-base">All the tags used in posts.</p>
+            <h2 class="font-semibold text-3xl mb-2">{{ __('messages.tags.title') }}</h2>
+            <p class="italic text-base">{{ __('messages.tags.subtitle') }}</p>
         </div>
 
         @if($tags->count() > 0)
@@ -25,7 +25,7 @@
             </div>
         @else
             <div class="text-center py-12">
-                <p class="text-lg text-gray-400">Chưa có tag nào được sử dụng.</p>
+                <p class="text-lg text-gray-400">{{ __('messages.tags.no_tags') }}</p>
             </div>
         @endif
     </div>

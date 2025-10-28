@@ -16,7 +16,7 @@
                     </clipPath>
                 </defs>
             </svg>
-            Prev
+            {{ __('messages.pagination.previous') }}
         </a>
     @else
         <span class="flex items-center opacity-50 cursor-not-allowed">
@@ -35,7 +35,7 @@
                     </clipPath>
                 </defs>
             </svg>
-            Prev
+            {{ __('messages.pagination.previous') }}
         </span>
     @endif
     
@@ -43,7 +43,7 @@
     
     @if($nextUrl)
         <a href="{{ $nextUrl }}" class="flex items-center group/icon">
-            Next
+            {{ __('messages.pagination.next') }}
             <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_134_1642)">
                     <path class="group-hover/icon:stroke-accent" d="M5.5 12H19.5" stroke="currentColor" stroke-width="2"
@@ -62,7 +62,7 @@
         </a>
     @else
         <span class="flex items-center opacity-50 cursor-not-allowed">
-            Next
+            {{ __('messages.pagination.next') }}
             <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_134_1642)">
                     <path d="M5.5 12H19.5" stroke="currentColor" stroke-width="2"

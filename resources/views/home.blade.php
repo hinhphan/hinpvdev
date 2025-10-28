@@ -1,6 +1,6 @@
 <x-layouts.master>
     <x-slot:title>
-        Home
+        {{ __('messages.nav.home') }}
     </x-slot:title>
 
     <x-sections.hero />

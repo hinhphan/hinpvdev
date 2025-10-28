@@ -1,14 +1,14 @@
 <x-layouts.master>
     <x-slot:title>
-        Search
+        {{ __('messages.search.title') }}
     </x-slot:title>
 
     <div class="px-4 pt-8 pb-10 md:pb-[92px]">
         <div class="mb-6">
-            <x-misc.breadcrumb :items="[['title' => 'Home', 'url' => route('home')], ['title' => 'Search', 'url' => '#']]" />
+            <x-misc.breadcrumb :items="[['title' => __('messages.common.home'), 'url' => route('home')], ['title' => __('messages.search.title'), 'url' => '#']]" />
 
-            <h2 class="font-semibold text-2xl md:text-3xl mb-2">Search</h2>
-            <p class="italic text-base">Search any article ...</p>
+            <h2 class="font-semibold text-2xl md:text-3xl mb-2">{{ __('messages.search.title') }}</h2>
+            <p class="italic text-base">{{ __('messages.search.subtitle') }}</p>
         </div>
 
         <div>
@@ -23,11 +23,12 @@
                     type="text" 
                     name="q"
                     value="{{ $query ?? '' }}"
-                    placeholder="Search for articles..."
+                    placeholder="{{ __('messages.search.placeholder') }}"
                     class="border border-text-base rounded-lg pl-12 py-3.5 w-full outline-0"
                     >
                 </div>
-            </form>            <p class="my-6">Found {{ isset($posts) ? $posts->total() : 0 }} result(s){{ isset($query) && $query ? " for '{$query}'" : '' }}</p>
+            </form>
+            <p class="my-6">{{ __('messages.search.results_count', ['count' => isset($posts) ? $posts->total() : 0]) }}{{ isset($query) && $query ? " '" . $query . "'" : '' }}</p>
         </div>
 
         @if(isset($posts) && $posts->count() > 0)
@@ -39,9 +40,9 @@
         @else
             <div class="text-center py-12">
                 @if(isset($query) && $query)
-                    <p class="text-lg text-gray-400">No results found for "{{ $query }}".</p>
+                    <p class="text-lg text-gray-400">{{ __('messages.search.no_results') }}</p>
                 @else
-                    <p class="text-lg text-gray-400">Enter a search query to find articles.</p>
+                    <p class="text-lg text-gray-400">{{ __('messages.search.enter_query') }}</p>
                 @endif
             </div>
         @endif

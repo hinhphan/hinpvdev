@@ -40,13 +40,13 @@
         {{-- Navigation Links --}}
         <ul class="flex flex-col md:flex-row items-center gap-x-5 gap-y-6">
             <li>
-                <a href="{{ route('posts.index') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">Posts</a>
+                <a href="{{ route('posts.index') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">{{ __('messages.nav.posts') }}</a>
             </li>
             <li>
-                <a href="{{ route('tags.index') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">Tags</a>
+                <a href="{{ route('tags.index') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">{{ __('messages.nav.tags') }}</a>
             </li>
             <li>
-                <a href="{{ route('about') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">About</a>
+                <a href="{{ route('about') }}" class="hover:underline hover:decoration-wavy font-medium text-base md:text-lg">{{ __('messages.nav.about') }}</a>
             </li>
         </ul>
 

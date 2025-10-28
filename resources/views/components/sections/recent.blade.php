@@ -1,6 +1,6 @@
 <div class="relative">
     <div class="px-4 pt-12 pb-[25px] md:py-12">
-        <h3 class="font-semibold text-2xl mb-[21px]">Recent Posts</h3>
+        <h3 class="font-semibold text-2xl mb-[21px]">{{ __('messages.home.recent_posts') }}</h3>
         
         @if($posts->count() > 0)
             <div class="flex flex-col gap-y-6">
@@ -9,13 +9,13 @@
                 @endforeach
             </div>
         @else
-            <p class="text-gray-400 text-center py-8">No recent posts yet.</p>
+            <p class="text-gray-400 text-center py-8">{{ __('messages.home.no_recent_posts') }}</p>
         @endif
     </div>
 
     <div class="flex justify-center pt-8 md:pt-0 pb-8">
         <a href="{{ route('posts.index') }}" class="flex items-center gap-x-1 group/icon font-normal text-base">
-            All Posts
+            {{ __('messages.home.all_posts') }}
             <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     class="group-hover/icon:fill-accent"

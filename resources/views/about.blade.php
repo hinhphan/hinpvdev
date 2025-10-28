@@ -1,13 +1,13 @@
 <x-layouts.master>
     <x-slot:title>
-        About
+        {{ __('messages.about.title') }}
     </x-slot:title>
 
     <div class="px-4 pt-8 pb-10 md:pb-[92px]">
         <div class="mb-6">
-            <x-misc.breadcrumb :items="[['title' => 'Home', 'url' => route('home')], ['title' => 'About', 'url' => '#']]" />
+            <x-misc.breadcrumb :items="[['title' => __('messages.common.home'), 'url' => route('home')], ['title' => __('messages.about.title'), 'url' => '#']]" />
 
-            <h2 class="font-semibold text-2xl md:text-3xl mb-2">About</h2>
+            <h2 class="font-semibold text-2xl md:text-3xl mb-2">{{ __('messages.about.title') }}</h2>
         </div>
 
         <div>
