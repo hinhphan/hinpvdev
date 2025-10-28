@@ -23,7 +23,7 @@
                     Danh sách bài viết
                 </a>
                 
-                <a href="#" class="border border-accent py-2 px-4 rounded text-center hover:bg-accent/10">
+                <a href="{{ route('admin.tags.index') }}" class="border border-accent py-2 px-4 rounded text-center hover:bg-accent/10">
                     Quản lý tags
                 </a>
             </div>

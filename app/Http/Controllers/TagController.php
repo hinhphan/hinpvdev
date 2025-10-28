@@ -40,4 +40,13 @@ class TagController extends Controller
         
         return view('tags.show', compact('tag', 'posts'));
     }
+
+    /**
+     * API endpoint to get all tag names for autocomplete.
+     */
+    public function apiIndex()
+    {
+        $tags = Tag::orderBy('name')->pluck('name');
+        return response()->json($tags);
+    }
 }

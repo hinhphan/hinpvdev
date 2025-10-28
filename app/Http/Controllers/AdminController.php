@@ -166,10 +166,19 @@ class AdminController extends Controller
             'meta_keywords' => 'nullable|string',
             'canonical_url' => 'nullable|url',
             'og_image' => 'nullable|image|max:5120',
+            'remove_thumbnail' => 'nullable|in:0,1',
+            'remove_og_image' => 'nullable|in:0,1',
         ]);
 
         DB::beginTransaction();
         try {
+            // Handle thumbnail removal
+            if ($request->input('remove_thumbnail') == '1' && $post->thumbnail) {
+                Storage::disk('public')->delete($post->thumbnail->path);
+                $post->thumbnail->delete();
+                $validated['thumbnail_id'] = null;
+            }
+
             // Handle thumbnail upload
             if ($request->hasFile('thumbnail')) {
                 $thumbnail = $request->file('thumbnail');
@@ -230,6 +239,13 @@ class AdminController extends Controller
                 'canonical_url' => $validated['canonical_url'] ?? null,
             ];
 
+            // Handle OG image removal
+            if ($request->input('remove_og_image') == '1' && $post->seoMeta && $post->seoMeta->ogImage) {
+                Storage::disk('public')->delete($post->seoMeta->ogImage->path);
+                $post->seoMeta->ogImage->delete();
+                $seoData['og_image_id'] = null;
+            }
+
             if ($request->hasFile('og_image')) {
                 $ogImage = $request->file('og_image');
                 $path = $ogImage->store('og-images', 'public');
@@ -272,6 +288,88 @@ class AdminController extends Controller
 
             return redirect()->route('admin.posts.index')
                 ->with('success', 'Bài viết đã được xóa thành công!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()]);
+        }
+    }
+
+    // Tags Management
+    public function indexTags()
+    {
+        $tags = Tag::withCount('posts')
+            ->orderBy('name')
+            ->paginate(20);
+        
+        return view('admins.tags.index', compact('tags'));
+    }
+
+    public function createTag()
+    {
+        return view('admins.tags.create');
+    }
+
+    public function storeTag(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:tags,slug',
+        ]);
+
+        try {
+            Tag::create($validated);
+
+            return redirect()->route('admin.tags.index')
+                ->with('success', 'Tag đã được tạo thành công!');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()]);
+        }
+    }
+
+    public function editTag($id)
+    {
+        $tag = Tag::withCount('posts')->findOrFail($id);
+        return view('admins.tags.edit', compact('tag'));
+    }
+
+    public function updateTag(Request $request, $id)
+    {
+        $tag = Tag::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:tags,slug,' . $id,
+        ]);
+
+        try {
+            $tag->update($validated);
+
+            return redirect()->route('admin.tags.index')
+                ->with('success', 'Tag đã được cập nhật thành công!');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()]);
+        }
+    }
+
+    public function destroyTag($id)
+    {
+        try {
+            $tag = Tag::findOrFail($id);
+            
+            // Check if tag has posts
+            if ($tag->posts()->count() > 0) {
+                return back()
+                    ->withErrors(['error' => 'Không thể xóa tag này vì đang được sử dụng trong ' . $tag->posts()->count() . ' bài viết.']);
+            }
+            
+            $tag->delete();
+
+            return redirect()->route('admin.tags.index')
+                ->with('success', 'Tag đã được xóa thành công!');
         } catch (\Exception $e) {
             return back()
                 ->withErrors(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()]);

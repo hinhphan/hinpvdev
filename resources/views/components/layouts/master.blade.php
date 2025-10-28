@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     
     @vite('resources/css/app.css')
+    @stack('styles')
 </head>
 <body>
-    <div class="container max-w-3xl m-auto">
+    <div class="{{ request()->is('admin*') ? 'container max-w-6xl m-auto' : 'container max-w-3xl m-auto' }}">
         {{-- Header --}}
         <x-parts.header />
 
