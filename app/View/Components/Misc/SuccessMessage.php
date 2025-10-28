@@ -6,17 +6,12 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Pagination extends Component
+class SuccessMessage extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(
-        public ?string $prevUrl = null,
-        public ?string $nextUrl = null,
-        public int $currentPage = 1,
-        public int $totalPages = 1
-    )
+    public function __construct()
     {
         //
     }
@@ -26,6 +21,6 @@ class Pagination extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.misc.pagination');
+        return view('components.misc.success-message');
     }
 }

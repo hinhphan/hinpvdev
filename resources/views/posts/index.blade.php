@@ -7,19 +7,32 @@
         <div class="mb-6">
             <x-misc.breadcrumb :items="[
                 ['title' => 'Home', 'url' => route('home')],
-                ['title' => 'Posts (Page 1)', 'url' => '#']
+                ['title' => 'Posts (Page ' . $posts->currentPage() . ')', 'url' => '#']
             ]" />
 
             <h2 class="font-semibold text-2xl md:text-3xl mb-2">Posts</h2>
             <p class="italic text-base">All the articles I've posted.</p>
         </div>
 
-        <div class="flex flex-col gap-y-6">
-            <x-posts.card />
-            <x-posts.card />
-            <x-posts.card />
-        </div>
+        @if($posts->count() > 0)
+            <div class="flex flex-col gap-y-6">
+                @foreach($posts as $post)
+                    <x-posts.card :post="$post" />
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-12">
+                <p class="text-lg text-gray-400">Chưa có bài viết nào được xuất bản.</p>
+            </div>
+        @endif
     </div>
 
-    <x-misc.pagination :currentPage="1" :totalPages="6" prevUrl="#" nextUrl="#" />
+    @if($posts->hasPages())
+        <x-misc.pagination 
+            :prevUrl="$posts->previousPageUrl()" 
+            :nextUrl="$posts->nextPageUrl()" 
+            :currentPage="$posts->currentPage()" 
+            :totalPages="$posts->lastPage()" 
+        />
+    @endif
 </x-layouts.master>

@@ -2,36 +2,25 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+// Home & Public Pages
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 
-Route::get('/posts', function () {
-    return view('posts.index');
-})->name('posts.index');
+// Posts
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
-Route::get('/posts/{slug}', function ($slug) {
-    return view('posts.show', ['slug' => $slug]);
-})->name('posts.show');
+// Tags
+Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+Route::get('/tags/{slug}', [TagController::class, 'show'])->name('tags.show');
 
-Route::get('/tags', function () {
-    return view('tags.index');
-})->name('tags.index');
-
-Route::get('/tags/{slug}', function ($slug) {
-    return view('tags.show', ['slug' => $slug]);
-})->name('tags.show');
-
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-Route::get('/search', function () {
-    return view('search');
-})->name('search');
-
+// Error Pages
 Route::get('/not-found', function () {
     return view('errors.404');
 })->name('404');
@@ -46,6 +35,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // Posts Management
+    Route::get('/admin/posts', [AdminController::class, 'indexPosts'])->name('admin.posts.index');
+    Route::get('/admin/posts/create', [AdminController::class, 'createPost'])->name('admin.posts.create');
+    Route::post('/admin/posts', [AdminController::class, 'storePost'])->name('admin.posts.store');
+    Route::get('/admin/posts/{id}/edit', [AdminController::class, 'editPost'])->name('admin.posts.edit');
+    Route::put('/admin/posts/{id}', [AdminController::class, 'updatePost'])->name('admin.posts.update');
+    Route::delete('/admin/posts/{id}', [AdminController::class, 'destroyPost'])->name('admin.posts.destroy');
 });
 
 Route::get('/tool-pdf', function () {

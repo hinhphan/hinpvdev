@@ -17,7 +17,10 @@ class SeoMetaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'meta_title' => fake()->sentence(6),
+            'meta_description' => fake()->paragraph(2),
+            'meta_keywords' => implode(', ', fake()->words(8)),
+            'canonical_url' => fake()->url(),
         ];
     }
 }

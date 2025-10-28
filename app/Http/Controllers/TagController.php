@@ -3,64 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\Post;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 
 class TagController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of all tags.
      */
     public function index()
     {
-        //
+        $tags = Tag::withCount(['posts' => function ($query) {
+            $query->published();
+        }])
+        ->having('posts_count', '>', 0)
+        ->orderBy('name')
+        ->get();
+        
+        return view('tags.index', compact('tags'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display posts for a specific tag.
      */
-    public function create()
+    public function show($slug)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTagRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTagRequest $request, Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tag $tag)
-    {
-        //
+        $tag = Tag::where('slug', $slug)->firstOrFail();
+        
+        $posts = Post::published()
+            ->whereHas('tags', function ($query) use ($tag) {
+                $query->where('tags.id', $tag->id);
+            })
+            ->orderBy('published_at', 'desc')
+            ->paginate(10);
+        
+        return view('tags.show', compact('tag', 'posts'));
     }
 }

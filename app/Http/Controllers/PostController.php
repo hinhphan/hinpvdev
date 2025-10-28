@@ -9,43 +9,28 @@ use App\Http\Requests\UpdatePostRequest;
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of published posts.
      */
     public function index()
     {
-        //
+        $posts = Post::published()
+            ->orderBy('published_at', 'desc')
+            ->paginate(10);
+        
+        return view('posts.index', compact('posts'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified post by slug.
      */
-    public function create()
+    public function show($slug)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorePostRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
+        $post = Post::where('slug', $slug)
+            ->with(['tags', 'thumbnail', 'seoMeta'])
+            ->published()
+            ->firstOrFail();
+        
+        return view('posts.show', compact('post'));
     }
 
     /**

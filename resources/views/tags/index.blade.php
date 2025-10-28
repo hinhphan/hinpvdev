@@ -14,17 +14,19 @@
             <p class="italic text-base">All the tags used in posts.</p>
         </div>
 
-        <div class="flex flex-wrap gap-x-8 gap-y-[18px]">
-            <x-misc.tag name="hinpv" url="{{ route('tags.show', ['slug' => 'hinpv']) }}" />
-            <x-misc.tag name="laravel" url="{{ route('tags.show', ['slug' => 'laravel']) }}" />
-            <x-misc.tag name="php" url="{{ route('tags.show', ['slug' => 'php']) }}" />
-            <x-misc.tag name="javascript" url="{{ route('tags.show', ['slug' => 'javascript']) }}" />
-            <x-misc.tag name="vue" url="{{ route('tags.show', ['slug' => 'vue']) }}" />
-            <x-misc.tag name="react" url="{{ route('tags.show', ['slug' => 'react']) }}" />
-            <x-misc.tag name="svelte" url="{{ route('tags.show', ['slug' => 'svelte']) }}" />
-            <x-misc.tag name="nextjs" url="{{ route('tags.show', ['slug' => 'nextjs']) }}" />
-            <x-misc.tag name="astro" url="{{ route('tags.show', ['slug' => 'astro']) }}" />
-            <x-misc.tag name="remix" url="{{ route('tags.show', ['slug' => 'remix']) }}" />
-        </div>
+        @if($tags->count() > 0)
+            <div class="flex flex-wrap gap-x-8 gap-y-[18px]">
+                @foreach($tags as $tag)
+                    <x-misc.tag 
+                        name="{{ $tag->name }} ({{ $tag->posts_count }})" 
+                        url="{{ route('tags.show', ['slug' => $tag->slug]) }}" 
+                    />
+                @endforeach
+            </div>
+        @else
+            <div class="text-center py-12">
+                <p class="text-lg text-gray-400">Chưa có tag nào được sử dụng.</p>
+            </div>
+        @endif
     </div>
 </x-layouts.master>

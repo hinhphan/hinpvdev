@@ -1,16 +1,21 @@
 <article>
     {{-- Post Title --}}
     <h4 class="font-medium text-lg text-accent mb-1.5">
-        <a href="{{ route('posts.show', ['slug' => 'astro-paper-4-0']) }}" class="hover:underline decoration-dashed underline-offset-4">
-            AstroPaper 4.0
+        <a href="{{ route('posts.show', ['slug' => $post->slug]) }}" class="hover:underline decoration-dashed underline-offset-4">
+            {{ $post->title }}
         </a>
     </h4>
 
     {{-- Post Meta --}}
     <div class="mb-1.5">
-        <x-misc.datetime datetime="Jan 4, 2024 | 9:30 AM" datetimeAttr="2024-01-04 09:30" />
+        <x-misc.datetime 
+            datetime="{{ $post->published_at ? $post->published_at->format('M d, Y | g:i A') : 'Draft' }}" 
+            datetimeAttr="{{ $post->published_at ? $post->published_at->toIso8601String() : '' }}" 
+        />
     </div>
 
     {{-- Post Excerpt --}}
-    <p class="font-normal text-base">AstroPaper v4: ensuring a smoother and more feature-rich blogging experience.</p>
+    @if($post->excerpt)
+        <p class="font-normal text-base">{{ $post->excerpt }}</p>
+    @endif
 </article>

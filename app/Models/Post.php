@@ -24,4 +24,39 @@ class Post extends Model
         'status',
         'published_at',
     ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
+        'status' => 'integer',
+    ];
+
+    // Relationships
+    public function thumbnail()
+    {
+        return $this->belongsTo(File::class, 'thumbnail_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'post_tags', 'post_id', 'tag_id')
+            ->withTimestamps();
+    }
+
+    public function seoMeta()
+    {
+        return $this->hasOne(SeoMeta::class, 'post_id');
+    }
+
+    // Scopes
+    public function scopePublished($query)
+    {
+        return $query->where('status', self::STATUS['PUBLISHED'])
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
+    }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', self::STATUS['DRAFT']);
+    }
 }

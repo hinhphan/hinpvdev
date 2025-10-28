@@ -5,15 +5,18 @@ namespace App\View\Components\Sections;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Illuminate\Support\Collection;
 
 class Featured extends Component
 {
+    public Collection $posts;
+
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(Collection $posts)
     {
-        //
+        $this->posts = $posts;
     }
 
     /**

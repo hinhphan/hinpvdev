@@ -5,7 +5,7 @@
 
     <x-sections.hero />
 
-    <x-sections.featured />
+    <x-sections.featured :posts="$featuredPosts" />
     
-    <x-sections.recent />
+    <x-sections.recent :posts="$recentPosts" />
 </x-layouts.master>

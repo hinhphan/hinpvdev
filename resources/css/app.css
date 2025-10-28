@@ -28,6 +28,79 @@
         @apply font-ibmmono font-normal text-base bg-fill text-text-base;
     }
 
+    /* Light mode */
+    html.light {
+        --color-text-base: #1a202c;
+        --color-fill: #f7fafc;
+        --color-card: #edf2f7;
+        --color-border: #FF6B01;
+    }
+
+    html.light body {
+        background-color: var(--color-fill);
+        color: var(--color-text-base);
+    }
+
+    html.light .bg-fill {
+        background-color: var(--color-fill);
+    }
+
+    html.light .bg-card {
+        background-color: var(--color-card);
+    }
+
+    html.light .text-text-base {
+        color: var(--color-text-base);
+    }
+
+    html.light .border-border {
+        border-color: var(--color-border);
+    }
+
+    html.light .prose blockquote {
+        color: #2d3748 !important;
+        background: rgba(203, 213, 224, 0.5);
+    }
+    
+    html.light .prose blockquote p {
+        color: #2d3748 !important;
+    }
+
+    html.light .prose code {
+        background: rgba(237, 242, 247, 0.8);
+        color: #2d3748;
+    }
+
+    /* Light mode code blocks */
+    html.light .prose pre {
+        background: #e2e8f0 !important;
+        border-color: #cbd5e0;
+    }
+
+    html.light .prose pre code {
+        background: transparent !important;
+    }
+
+    /* Override Highlight.js dark theme colors in light mode */
+    html.light .hljs {
+        background: #e2e8f0 !important;
+        color: #1a202c !important;
+    }
+
+    html.light .hljs-keyword { color: #d73a49 !important; }
+    html.light .hljs-string { color: #032f62 !important; }
+    html.light .hljs-title { color: #6f42c1 !important; }
+    html.light .hljs-function { color: #005cc5 !important; }
+    html.light .hljs-variable { color: #e36209 !important; }
+    html.light .hljs-comment { color: #6a737d !important; }
+    html.light .hljs-number { color: #005cc5 !important; }
+    html.light .hljs-class { color: #6f42c1 !important; }
+    html.light .hljs-meta { color: #d73a49 !important; }
+    html.light .hljs-built_in { color: #005cc5 !important; }
+    html.light .hljs-title.class_ { color: #6f42c1 !important; }
+    html.light .hljs-title.function_ { color: #6f42c1 !important; }
+    html.light .hljs-variable.language_ { color: #005cc5 !important; }
+
     button {
         @apply cursor-pointer;
     }
@@ -35,4 +108,206 @@
     a {
         @apply hover:text-accent
     }
+}
+
+/* Prose styling for Markdown content */
+.prose {
+    @apply text-text-base;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply font-bold text-accent mb-4 mt-6;
+}
+
+.prose h1 { @apply text-4xl; }
+.prose h2 { @apply text-3xl; }
+.prose h3 { @apply text-2xl; }
+.prose h4 { @apply text-xl; }
+
+.prose p {
+    @apply mb-4 leading-relaxed;
+}
+
+.prose a {
+    @apply text-accent underline hover:text-orange-400;
+}
+
+.prose ul, .prose ol {
+    @apply mb-4 ml-6;
+}
+
+.prose ul {
+    @apply list-disc;
+}
+
+.prose ol {
+    @apply list-decimal;
+}
+
+.prose li {
+    @apply mb-2;
+}
+
+/* Task list items - remove bullet when checkbox present */
+.prose li:has(input[type="checkbox"]) {
+    list-style: none;
+    margin-left: -1.5rem;
+}
+
+.prose li input[type="checkbox"] {
+    margin-right: 0.5rem;
+    cursor: default;
+}
+
+.prose pre {
+    @apply bg-card p-4 rounded overflow-x-auto mb-4 border border-border;
+    position: relative;
+}
+
+.prose code {
+    @apply px-2 py-1 rounded text-sm font-mono;
+    background: rgba(52, 63, 96, 0.5);
+}
+
+.prose pre code {
+    @apply bg-transparent p-0;
+    display: block;
+}
+
+.prose blockquote {
+    @apply border-l-4 border-accent pl-4 italic my-4 text-gray-300;
+    background: rgba(52, 63, 96, 0.3);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.prose img {
+    @apply rounded my-4 max-w-full;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 107, 1, 0.2);
+}
+
+.prose img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode images */
+html.light .prose img {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.08);
+    border-color: rgba(255, 107, 1, 0.3);
+}
+
+html.light .prose img:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.12);
+}
+
+.prose table {
+    @apply w-full border-collapse mb-4 table-auto;
+    display: table;
+    border-spacing: 0;
+}
+
+.prose thead {
+    @apply bg-card;
+}
+
+.prose th {
+    @apply border border-border p-3 text-left font-semibold text-accent;
+    min-width: 100px;
+}
+
+.prose td {
+    @apply border border-border p-3;
+    min-width: 100px;
+}
+
+.prose tbody tr:hover {
+    @apply bg-card/50;
+}
+
+.prose tr {
+    @apply border-b border-border;
+}
+
+.prose hr {
+    @apply border-border my-6;
+}
+
+.prose strong {
+    @apply font-bold text-accent;
+}
+
+.prose em {
+    @apply italic;
+}
+
+.prose iframe {
+    @apply rounded my-6 w-full;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+}
+
+/* Video container for better responsive handling */
+.prose .video-wrapper {
+    @apply relative w-full my-6;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+}
+
+.prose .video-wrapper iframe {
+    @apply absolute top-0 left-0 w-full h-full;
+}
+
+/* Code block wrapper with copy button */
+.code-block-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.copy-code-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255, 107, 1, 0.1);
+    border: 1px solid #FF6B01;
+    border-radius: 6px;
+    color: #FF6B01;
+    font-size: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.copy-code-btn:hover {
+    background: rgba(255, 107, 1, 0.2);
+    transform: translateY(-1px);
+}
+
+.copy-code-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.code-block-wrapper pre {
+    margin-bottom: 0;
+}
+
+/* Light mode copy button */
+html.light .copy-code-btn {
+    background: rgba(255, 107, 1, 0.15);
+    border-color: #FF6B01;
+    color: #c05621;
+}
+
+html.light .copy-code-btn:hover {
+    background: rgba(255, 107, 1, 0.25);
 }
