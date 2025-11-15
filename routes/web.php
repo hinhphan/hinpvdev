@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AutoFormController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -22,6 +23,7 @@ Route::get('/tags/{slug}', [TagController::class, 'show'])->name('tags.show');
 
 // API endpoints
 Route::get('/api/tags', [TagController::class, 'apiIndex'])->name('api.tags');
+Route::match(['GET', 'POST'], '/auto-forms', [AutoFormController::class, 'store'])->name('api.auto-forms');
 
 // Error Pages
 Route::get('/not-found', function () {

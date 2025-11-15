@@ -1,0 +1,1126 @@
+### Auto Forms API Test
+### Base URL - Update this to match your local environment
+@baseUrl = http://localhost:8000
+@contentType = application/json
+
+### ============================================
+### Test 1: Basic Form with Common Field Types (GET)
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "id": "email-field",
+      "class": "form-control",
+      "placeholder": "Enter your email",
+      "value": ""
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "label": "Password",
+      "id": "password-field",
+      "class": "form-control",
+      "placeholder": "Enter your password",
+      "value": null
+    },
+    {
+      "name": "full_name",
+      "type": "text",
+      "label": "Full Name",
+      "id": "name-field",
+      "class": "form-control",
+      "placeholder": "Enter your full name",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 2: Form with All Field Types
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email",
+      "id": "email",
+      "class": "form-control",
+      "placeholder": "example@email.com",
+      "value": ""
+    },
+    {
+      "name": "phone",
+      "type": "tel",
+      "label": "Phone Number",
+      "id": "phone",
+      "class": "form-control",
+      "placeholder": "+1 234 567 8900",
+      "value": ""
+    },
+    {
+      "name": "website",
+      "type": "url",
+      "label": "Website",
+      "id": "website",
+      "class": "form-control",
+      "placeholder": "https://example.com",
+      "value": ""
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "label": "Age",
+      "id": "age",
+      "class": "form-control",
+      "placeholder": "Enter your age",
+      "value": ""
+    },
+    {
+      "name": "birth_date",
+      "type": "date",
+      "label": "Birth Date",
+      "id": "birth_date",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "appointment",
+      "type": "datetime-local",
+      "label": "Appointment Time",
+      "id": "appointment",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "favorite_color",
+      "type": "color",
+      "label": "Favorite Color",
+      "id": "color",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "#000000"
+    },
+    {
+      "name": "volume",
+      "type": "range",
+      "label": "Volume",
+      "id": "volume",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "50"
+    },
+    {
+      "name": "newsletter",
+      "type": "checkbox",
+      "label": "Subscribe to Newsletter",
+      "id": "newsletter",
+      "class": "form-check-input",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "gender",
+      "type": "radio",
+      "label": "Gender",
+      "id": "gender",
+      "class": "form-check-input",
+      "placeholder": "",
+      "value": "",
+      "options": ["Male", "Female", "Other"]
+    },
+    {
+      "name": "country",
+      "type": "select",
+      "label": "Country",
+      "id": "country",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "options": ["USA", "Canada", "UK", "Germany", "France", "Japan"]
+    },
+    {
+      "name": "message",
+      "type": "textarea",
+      "label": "Message",
+      "id": "message",
+      "class": "form-control",
+      "placeholder": "Enter your message",
+      "value": ""
+    },
+    {
+      "name": "search",
+      "type": "search",
+      "label": "Search",
+      "id": "search",
+      "class": "form-control",
+      "placeholder": "Search...",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 3: Minimal Fields (Only Required)
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "username",
+      "type": "text",
+      "label": "Username"
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email"
+    }
+  ]
+}
+
+### ============================================
+### Test 4: File Upload Form
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "document",
+      "type": "file",
+      "label": "Upload Document",
+      "id": "document",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "avatar",
+      "type": "file-upload",
+      "label": "Profile Picture",
+      "id": "avatar",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 5: Hidden Fields
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "user_id",
+      "type": "hidden",
+      "label": "User ID",
+      "id": "user_id",
+      "class": "",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "token",
+      "type": "hidden",
+      "label": "CSRF Token",
+      "id": "token",
+      "class": "",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email",
+      "id": "email",
+      "class": "form-control",
+      "placeholder": "Enter email",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 6: Complex Registration Form
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "first_name",
+      "type": "text",
+      "label": "First Name",
+      "id": "first_name",
+      "class": "form-control",
+      "placeholder": "John",
+      "value": ""
+    },
+    {
+      "name": "last_name",
+      "type": "text",
+      "label": "Last Name",
+      "id": "last_name",
+      "class": "form-control",
+      "placeholder": "Doe",
+      "value": ""
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "id": "email",
+      "class": "form-control",
+      "placeholder": "john.doe@example.com",
+      "value": ""
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "label": "Password",
+      "id": "password",
+      "class": "form-control",
+      "placeholder": "Minimum 8 characters",
+      "value": ""
+    },
+    {
+      "name": "phone",
+      "type": "tel",
+      "label": "Phone Number",
+      "id": "phone",
+      "class": "form-control",
+      "placeholder": "+1 234 567 8900",
+      "value": ""
+    },
+    {
+      "name": "date_of_birth",
+      "type": "date",
+      "label": "Date of Birth",
+      "id": "dob",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "bio",
+      "type": "textarea",
+      "label": "Biography",
+      "id": "bio",
+      "class": "form-control",
+      "placeholder": "Tell us about yourself",
+      "value": ""
+    },
+    {
+      "name": "terms",
+      "type": "checkbox",
+      "label": "I agree to the terms and conditions",
+      "id": "terms",
+      "class": "form-check-input",
+      "placeholder": "",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 7: Validation Error - Missing Fields
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": []
+}
+
+### ============================================
+### Test 8: Validation Error - Missing Required Fields
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "type": "text",
+      "label": "Name"
+    }
+  ]
+}
+
+### ============================================
+### Test 9: Single Field Test
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "test_field",
+      "type": "text",
+      "label": "Test Field",
+      "id": "test",
+      "class": "form-control",
+      "placeholder": "Enter test value",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 10: Time and Date Related Fields
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "time",
+      "type": "time",
+      "label": "Time",
+      "id": "time",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "month",
+      "type": "month",
+      "label": "Month",
+      "id": "month",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "week",
+      "type": "week",
+      "label": "Week",
+      "id": "week",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 11: Select and Radio with Options
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "status",
+      "type": "select",
+      "label": "Status",
+      "id": "status",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "options": ["Active", "Inactive", "Pending", "Suspended"]
+    },
+    {
+      "name": "priority",
+      "type": "radio",
+      "label": "Priority",
+      "id": "priority",
+      "class": "form-check-input",
+      "placeholder": "",
+      "value": "",
+      "options": ["Low", "Medium", "High", "Urgent"]
+    },
+    {
+      "name": "category",
+      "type": "select",
+      "label": "Category",
+      "id": "category",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "options": ["Technology", "Business", "Science", "Arts", "Sports"]
+    },
+    {
+      "name": "language",
+      "type": "radio",
+      "label": "Preferred Language",
+      "id": "language",
+      "class": "form-check-input",
+      "placeholder": "",
+      "value": "",
+      "options": ["English", "Spanish", "French", "German", "Vietnamese"]
+    }
+  ]
+}
+
+### ============================================
+### Test 12: With Locale - Vietnamese (Default)
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "vi",
+  "fields": [
+    {
+      "name": "full_name",
+      "type": "text",
+      "label": "Họ và tên",
+      "id": "full_name",
+      "class": "form-control",
+      "placeholder": "Nhập họ và tên",
+      "value": ""
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email",
+      "id": "email",
+      "class": "form-control",
+      "placeholder": "example@email.com",
+      "value": ""
+    },
+    {
+      "name": "phone",
+      "type": "tel",
+      "label": "Số điện thoại",
+      "id": "phone",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 13: With Locale - English
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "en",
+  "fields": [
+    {
+      "name": "full_name",
+      "type": "text",
+      "label": "Full Name",
+      "id": "full_name",
+      "class": "form-control",
+      "placeholder": "Enter your full name",
+      "value": ""
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "id": "email",
+      "class": "form-control",
+      "placeholder": "example@email.com",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 14: With Locale - Japanese
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "ja",
+  "fields": [
+    {
+      "name": "name",
+      "type": "text",
+      "label": "名前",
+      "id": "name",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "メールアドレス",
+      "id": "email",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "description",
+      "type": "textarea",
+      "label": "説明",
+      "id": "description",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    },
+    {
+      "name": "search_term",
+      "type": "search",
+      "label": "検索",
+      "id": "search",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 15: Invalid Locale (Fallback to Vietnamese)
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "invalid_locale",
+  "fields": [
+    {
+      "name": "test",
+      "type": "text",
+      "label": "Test Field",
+      "id": "test",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 16: No Locale (Fallback to English)
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "name",
+      "type": "text",
+      "label": "Name",
+      "id": "name",
+      "class": "form-control",
+      "placeholder": "",
+      "value": ""
+    }
+  ]
+}
+
+### ============================================
+### Test 17: Number with Min/Max Constraints
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "age",
+      "type": "number",
+      "label": "Age",
+      "id": "age",
+      "class": "form-control",
+      "placeholder": "Enter your age",
+      "value": "",
+      "min": 18,
+      "max": 100
+    },
+    {
+      "name": "quantity",
+      "type": "number",
+      "label": "Quantity",
+      "id": "quantity",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 1,
+      "max": 1000
+    },
+    {
+      "name": "price",
+      "type": "number",
+      "label": "Price",
+      "id": "price",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 0,
+      "max": 9999
+    }
+  ]
+}
+
+### ============================================
+### Test 18: Range with Min/Max Constraints
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "volume",
+      "type": "range",
+      "label": "Volume",
+      "id": "volume",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "brightness",
+      "type": "range",
+      "label": "Brightness",
+      "id": "brightness",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 10,
+      "max": 90
+    }
+  ]
+}
+
+### ============================================
+### Test 19: Text with Min/Max Length Constraints
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "username",
+      "type": "text",
+      "label": "Username",
+      "id": "username",
+      "class": "form-control",
+      "placeholder": "Enter username",
+      "value": "",
+      "min_length": 5,
+      "max_length": 20
+    },
+    {
+      "name": "short_code",
+      "type": "text",
+      "label": "Short Code",
+      "id": "short_code",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 3,
+      "max_length": 10
+    },
+    {
+      "name": "long_text",
+      "type": "text",
+      "label": "Long Text",
+      "id": "long_text",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 50,
+      "max_length": 200
+    }
+  ]
+}
+
+### ============================================
+### Test 20: Password with Min/Max Length
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "password",
+      "type": "password",
+      "label": "Password",
+      "id": "password",
+      "class": "form-control",
+      "placeholder": "Enter password",
+      "value": "",
+      "min_length": 8,
+      "max_length": 32
+    },
+    {
+      "name": "pin",
+      "type": "password",
+      "label": "PIN",
+      "id": "pin",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 4,
+      "max_length": 6
+    },
+    {
+      "name": "strong_password",
+      "type": "password",
+      "label": "Strong Password",
+      "id": "strong_password",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 12,
+      "max_length": 64
+    }
+  ]
+}
+
+### ============================================
+### Test 21: Textarea with Min/Max Length
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "description",
+      "type": "textarea",
+      "label": "Description",
+      "id": "description",
+      "class": "form-control",
+      "placeholder": "Enter description",
+      "value": "",
+      "min_length": 50,
+      "max_length": 500
+    },
+    {
+      "name": "short_note",
+      "type": "textarea",
+      "label": "Short Note",
+      "id": "short_note",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 10,
+      "max_length": 100
+    },
+    {
+      "name": "long_essay",
+      "type": "textarea",
+      "label": "Essay",
+      "id": "essay",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 200,
+      "max_length": 2000
+    }
+  ]
+}
+
+### ============================================
+### Test 22: Search with Min/Max Length
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "search_term",
+      "type": "search",
+      "label": "Search",
+      "id": "search",
+      "class": "form-control",
+      "placeholder": "Search...",
+      "value": "",
+      "min_length": 2,
+      "max_length": 50
+    },
+    {
+      "name": "keyword",
+      "type": "search",
+      "label": "Keyword",
+      "id": "keyword",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 1,
+      "max_length": 20
+    }
+  ]
+}
+
+### ============================================
+### Test 23: Combined Constraints (All Types)
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "en",
+  "fields": [
+    {
+      "name": "age",
+      "type": "number",
+      "label": "Age",
+      "id": "age",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 18,
+      "max": 65
+    },
+    {
+      "name": "username",
+      "type": "text",
+      "label": "Username",
+      "id": "username",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 6,
+      "max_length": 30
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "label": "Password",
+      "id": "password",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 10,
+      "max_length": 40
+    },
+    {
+      "name": "volume",
+      "type": "range",
+      "label": "Volume",
+      "id": "volume",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "bio",
+      "type": "textarea",
+      "label": "Biography",
+      "id": "bio",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 100,
+      "max_length": 1000
+    }
+  ]
+}
+
+### ============================================
+### Test 24: Japanese Locale with Constraints
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "ja",
+  "fields": [
+    {
+      "name": "name",
+      "type": "text",
+      "label": "名前",
+      "id": "name",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 5,
+      "max_length": 30
+    },
+    {
+      "name": "description",
+      "type": "textarea",
+      "label": "説明",
+      "id": "description",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 50,
+      "max_length": 300
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "label": "年齢",
+      "id": "age",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 20,
+      "max": 80
+    }
+  ]
+}
+
+### ============================================
+### Test 25: POST Method - Basic Form
+### ============================================
+POST {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "en",
+  "fields": [
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "id": "email",
+      "class": "form-control",
+      "placeholder": "Enter your email",
+      "value": ""
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "label": "Password",
+      "id": "password",
+      "class": "form-control",
+      "placeholder": "Enter your password",
+      "value": "",
+      "min_length": 8,
+      "max_length": 32
+    }
+  ]
+}
+
+### ============================================
+### Test 26: POST Method - With Constraints
+### ============================================
+POST {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "ja",
+  "fields": [
+    {
+      "name": "username",
+      "type": "text",
+      "label": "ユーザー名",
+      "id": "username",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 5,
+      "max_length": 20
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "label": "年齢",
+      "id": "age",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min": 18,
+      "max": 100
+    },
+    {
+      "name": "bio",
+      "type": "textarea",
+      "label": "自己紹介",
+      "id": "bio",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "min_length": 50,
+      "max_length": 500
+    }
+  ]
+}
+
+### ============================================
+### Test 27: POST Method - Select with Options
+### ============================================
+POST {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "locale": "en",
+  "fields": [
+    {
+      "name": "country",
+      "type": "select",
+      "label": "Country",
+      "id": "country",
+      "class": "form-control",
+      "placeholder": "",
+      "value": "",
+      "options": ["USA", "Canada", "UK", "Germany", "France", "Japan", "Vietnam"]
+    },
+    {
+      "name": "status",
+      "type": "radio",
+      "label": "Status",
+      "id": "status",
+      "class": "form-check-input",
+      "placeholder": "",
+      "value": "",
+      "options": ["Active", "Inactive", "Pending"]
+    }
+  ]
+}
+
+### ============================================
+### Test 28: Without Label (Optional)
+### ============================================
+GET {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "email",
+      "type": "email"
+    },
+    {
+      "name": "username",
+      "type": "text",
+      "min_length": 5,
+      "max_length": 20
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "min": 18,
+      "max": 100
+    }
+  ]
+}
+
