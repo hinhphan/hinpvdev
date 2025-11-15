@@ -35,19 +35,6 @@ class AIFormDataGenerator
     }
 
     /**
-     * Build prompt using the prompt template class.
-     * Bạn có thể chỉnh sửa AIFormDataGeneratorPrompt để tùy chỉnh prompt.
-     *
-     * @param array $fields
-     * @param string|null $locale
-     * @return string
-     */
-    private function buildPrompt(array $fields, ?string $locale = 'en'): string
-    {
-        return AIFormDataGeneratorPrompt::buildPrompt($fields, $locale);
-    }
-
-    /**
      * Generate test data using OpenAI API.
      *
      * @param array $fields Form fields configuration
@@ -68,12 +55,13 @@ class AIFormDataGenerator
         
         // Kiểm tra và log trùng lặp field names
         $fieldNames = array_map(fn($f) => $f['name'] ?? 'unknown', $fields);
-        $duplicateFields = array_filter(array_count_values($fieldNames), fn($count) => $count > 1);
+        $fieldCounts = array_count_values($fieldNames);
+        $duplicateFields = array_filter($fieldCounts, fn($count) => $count > 1);
         
         if (!empty($duplicateFields)) {
             Log::warning('Duplicate field names detected', [
                 'duplicates' => $duplicateFields,
-                'field_counts' => array_count_values($fieldNames),
+                'field_counts' => $fieldCounts,
             ]);
         }
         
@@ -98,11 +86,6 @@ class AIFormDataGenerator
         try {
             $requestStartTime = microtime(true);
             
-            // Responses API yêu cầu prompt.id - có thể cần tạo prompt trước hoặc format khác
-            // Tạm thời quay lại chat/completions với format tối ưu cho tốc độ
-            // Hoặc có thể Responses API cần workflow khác (tạo prompt trước, sau đó dùng ID)
-            
-            // Thử format đơn giản hơn: dùng chat/completions nhưng tối ưu
             $endpoint = 'v1/chat/completions';
             
             // Gộp system và user message thành một prompt ngắn gọn
@@ -165,7 +148,7 @@ class AIFormDataGenerator
             if (isset($responseBody['choices'][0]['message']['content'])) {
                 $content = $responseBody['choices'][0]['message']['content'];
             } elseif (isset($responseBody['text'])) {
-                // Fallback cho responses API format (nếu có)
+                // Fallback cho format khác
                 $content = $responseBody['text'];
             } elseif (isset($responseBody['content'])) {
                 // Fallback khác
@@ -200,15 +183,25 @@ class AIFormDataGenerator
 
             $totalTime = microtime(true) - $startTime;
             
+            // Validate response data structure
+            $resultData = $data['test_data'] ?? $data;
+            if (!is_array($resultData)) {
+                Log::warning('OpenAI API returned invalid data structure', [
+                    'data_type' => gettype($resultData),
+                    'data_preview' => is_string($resultData) ? substr($resultData, 0, 100) : $resultData,
+                ]);
+                throw new \RuntimeException('OpenAI API trả về dữ liệu không hợp lệ: không phải array');
+            }
+
             Log::info('OpenAI API Data Generated Successfully', [
                 'total_time_seconds' => round($totalTime, 3),
                 'request_time_seconds' => round($requestTime, 3),
                 'parse_time_seconds' => round($parseTime, 3),
-                'fields_generated' => count($data['test_data'] ?? $data),
+                'fields_generated' => count($resultData),
                 'response_size_bytes' => strlen($content),
             ]);
 
-            return $data['test_data'] ?? $data;
+            return $resultData;
 
         } catch (RequestException $e) {
             $totalTime = microtime(true) - $startTime;

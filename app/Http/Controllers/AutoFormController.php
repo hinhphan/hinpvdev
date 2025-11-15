@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AutoFormRequest;
 use App\Services\AIFormDataGenerator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class AutoFormController extends Controller
 {
@@ -191,7 +192,6 @@ class AutoFormController extends Controller
             [$aiFields, $fakerFields] = $this->separateFieldsByType($fields);
             
             $testData = [];
-            $generatorsUsed = [];
             $fakerLocale = $this->getFakerLocale($locale);
             $faker = $this->getFakerInstance($locale);
             
@@ -199,7 +199,6 @@ class AutoFormController extends Controller
             if (!empty($fakerFields)) {
                 $fakerData = $this->generateFieldsData($fakerFields, $faker, $fakerLocale);
                 $testData = array_merge($testData, $fakerData);
-                $generatorsUsed[] = 'faker';
             }
             
             // Generate với AI cho các field văn bản
@@ -207,36 +206,37 @@ class AutoFormController extends Controller
                 try {
                     $aiGenerator = new AIFormDataGenerator();
                     $aiData = $aiGenerator->generate($aiFields, $locale);
+                    
+                    // Validate AI response
+                    if (!is_array($aiData)) {
+                        throw new \RuntimeException('AI generator trả về dữ liệu không hợp lệ');
+                    }
+                    
                     $testData = array_merge($testData, $aiData);
-                    $generatorsUsed[] = 'ai';
                 } catch (\Exception $e) {
                     // Fallback to Faker nếu AI fail
+                    Log::warning('AI generation failed, falling back to Faker', [
+                        'error' => $e->getMessage(),
+                        'ai_fields_count' => count($aiFields),
+                    ]);
                     $fakerData = $this->generateFieldsData($aiFields, $faker, $fakerLocale);
                     $testData = array_merge($testData, $fakerData);
-                    $generatorsUsed[] = 'faker (ai fallback)';
                 }
             }
             
             return response()->json([
-                'message' => 'Auto form endpoint (Hybrid: AI + Faker)',
+                'message' => 'Test data generated successfully',
                 'locale' => $locale,
-                'faker_locale' => $fakerLocale,
-                'generator' => implode(' + ', $generatorsUsed),
-                'ai_fields_count' => count($aiFields),
-                'faker_fields_count' => count($fakerFields),
                 'test_data' => $testData
             ]);
         }
         
         // Use Faker (default)
-        $fakerLocale = $this->getFakerLocale($locale);
         $testData = $this->generateTestData($fields, $locale);
         
         return response()->json([
-            'message' => 'Auto form endpoint',
+            'message' => 'Test data generated successfully',
             'locale' => $locale,
-            'faker_locale' => $fakerLocale,
-            'generator' => 'faker',
             'test_data' => $testData
         ]);
     }
