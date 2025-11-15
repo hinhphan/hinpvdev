@@ -11,34 +11,16 @@ class AutoFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
-    }
-
-    /**
-     * Prepare the data for validation.
-     * Handle GET request with JSON body or query string.
-     */
-    protected function prepareForValidation(): void
-    {
-        // For GET requests, try to parse JSON body if present
-        if ($this->isMethod('GET') && $this->header('Content-Type') === 'application/json') {
-            $content = $this->getContent();
-            if (!empty($content)) {
-                $data = json_decode($content, true);
-                if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
-                    $this->merge($data);
-                }
-            }
+        $apiKey = $this->header('X-API-Key') ?? $this->input('api_key');
+        $validApiKey = config('services.auto_forms.api_key') ?? env('AUTO_FORMS_API_KEY');
+        
+        if (!$validApiKey) {
+            return false; // Không có API key được cấu hình
         }
         
-        // Also handle query parameter 'data' as JSON string
-        if ($this->has('data') && !$this->has('fields')) {
-            $data = json_decode($this->get('data'), true);
-            if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
-                $this->merge($data);
-            }
-        }
+        return $apiKey === $validApiKey;
     }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -65,6 +47,31 @@ class AutoFormRequest extends FormRequest
             'fields.*.min_length' => 'nullable|integer|min:0',
             'fields.*.max_length' => 'nullable|integer|min:0',
         ];
+    }
+
+    /**
+     * Get custom error messages for validation.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'fields.required' => 'Trường fields là bắt buộc.',
+            'fields.array' => 'Trường fields phải là một mảng.',
+        ];
+    }
+
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     *
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     */
+    protected function failedAuthorization(): void
+    {
+        abort(403, 'Unauthorized: API key không hợp lệ hoặc thiếu. Vui lòng cung cấp X-API-Key header hoặc api_key trong request body.');
     }
 }
 

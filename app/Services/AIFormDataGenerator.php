@@ -62,25 +62,13 @@ class AIFormDataGenerator
 
         $startTime = microtime(true);
         $prompt = $this->buildPrompt($fields, $locale);
-        $promptLength = strlen($prompt);
-        
-        // Log prompt đầy đủ để test
-        Log::info('OpenAI API Request Started', [
-            'model' => $this->model,
-            'locale' => $locale,
-            'fields_count' => count($fields),
-            'prompt_length' => $promptLength,
-            'timestamp' => now()->toIso8601String(),
-        ]);
-        
-        // Log prompt đầy đủ và kiểm tra trùng lặp
-        $fieldNames = array_map(fn($f) => $f['name'] ?? 'unknown', $fields);
-        $duplicateFields = array_filter(array_count_values($fieldNames), fn($count) => $count > 1);
-        
         $systemMessage = AIFormDataGeneratorPrompt::getSystemMessage();
         $fullPrompt = $systemMessage . "\n\n" . $prompt;
         
-        // Log thông tin fields summary riêng
+        // Kiểm tra và log trùng lặp field names
+        $fieldNames = array_map(fn($f) => $f['name'] ?? 'unknown', $fields);
+        $duplicateFields = array_filter(array_count_values($fieldNames), fn($count) => $count > 1);
+        
         if (!empty($duplicateFields)) {
             Log::warning('Duplicate field names detected', [
                 'duplicates' => $duplicateFields,
@@ -88,12 +76,14 @@ class AIFormDataGenerator
             ]);
         }
         
-        // Log prompt đầy đủ (chỉ log full_prompt để tránh lặp)
-        Log::info('OpenAI API Prompt Content', [
-            'full_prompt' => $fullPrompt,
-            'prompt_length' => strlen($fullPrompt),
+        Log::info('OpenAI API Request Started', [
+            'model' => $this->model,
+            'locale' => $locale,
             'fields_count' => count($fields),
+            'prompt_length' => strlen($fullPrompt),
         ]);
+        
+        Log::info('OpenAI API Prompt Content', ['full_prompt' => $fullPrompt]);
         
         try {
             $requestStartTime = microtime(true);
@@ -201,7 +191,6 @@ class AIFormDataGenerator
                 'total_time_seconds' => round($totalTime, 3),
                 'fields_count' => count($fields),
                 'locale' => $locale,
-                'prompt_length' => $promptLength,
             ]);
             
             throw new \RuntimeException(
@@ -219,7 +208,6 @@ class AIFormDataGenerator
                 'total_time_seconds' => round($totalTime, 3),
                 'fields_count' => count($fields),
                 'locale' => $locale,
-                'prompt_length' => $promptLength,
             ]);
             
             throw new \RuntimeException($e->getMessage(), $e->getCode());
@@ -236,12 +224,10 @@ class AIFormDataGenerator
                 'total_time_seconds' => round($totalTime, 3),
                 'fields_count' => count($fields),
                 'locale' => $locale,
-                'prompt_length' => $promptLength,
             ]);
             throw $e;
         }
     }
-
 
     /**
      * Set OpenAI model.

@@ -2,12 +2,14 @@
 ### Base URL - Update this to match your local environment
 @baseUrl = http://localhost:8000
 @contentType = application/json
+@apiKey = your-secret-api-key-here
 
 ### ============================================
-### Test 1: Basic Form with Common Field Types (GET)
+### Test 1: Basic Form with Common Field Types (POST)
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -44,8 +46,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 2: Form with All Field Types
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -174,8 +177,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 3: Minimal Fields (Only Required)
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -195,8 +199,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 4: File Upload Form
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -224,8 +229,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 5: Hidden Fields
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -262,8 +268,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 6: Complex Registration Form
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -345,8 +352,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 7: Validation Error - Missing Fields
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": []
@@ -355,8 +363,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 8: Validation Error - Missing Required Fields
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -370,8 +379,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 9: Single Field Test
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -390,8 +400,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 10: Time and Date Related Fields
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -428,8 +439,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 11: Select and Radio with Options
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -479,8 +491,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 12: With Locale - Vietnamese (Default)
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "vi",
@@ -518,8 +531,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 13: With Locale - English
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "en",
@@ -548,8 +562,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 14: With Locale - Japanese
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "ja",
@@ -596,8 +611,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 15: Invalid Locale (Fallback to Vietnamese)
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "invalid_locale",
@@ -617,8 +633,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 16: No Locale (Fallback to English)
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -637,8 +654,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 17: Number with Min/Max Constraints
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -681,8 +699,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 18: Range with Min/Max Constraints
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -714,8 +733,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 19: Text with Min/Max Length Constraints
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -758,8 +778,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 20: Password with Min/Max Length
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -802,8 +823,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 21: Textarea with Min/Max Length
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -846,8 +868,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 22: Search with Min/Max Length
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -879,8 +902,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 23: Combined Constraints (All Types)
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "en",
@@ -946,8 +970,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 24: Japanese Locale with Constraints
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "ja",
@@ -1100,8 +1125,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 28: Without Label (Optional)
 ### ============================================
-GET {{baseUrl}}/auto-forms
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "fields": [
@@ -1128,8 +1154,9 @@ Content-Type: {{contentType}}
 ### Test 30: AI Generator - Basic Form
 ### ============================================
 ### Lưu ý: Cần có OPENAI_API_KEY trong file .env
-GET {{baseUrl}}/auto-forms?generator=ai
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "en",
@@ -1161,8 +1188,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 31: AI Generator - Japanese Locale
 ### ============================================
-GET {{baseUrl}}/auto-forms?generator=ai
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "ja",
@@ -1194,8 +1222,9 @@ Content-Type: {{contentType}}
 ### ============================================
 ### Test 32: AI Generator - Complex Form
 ### ============================================
-GET {{baseUrl}}/auto-forms?generator=ai
+POST {{baseUrl}}/auto-forms
 Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
 
 {
   "locale": "en",
@@ -1236,6 +1265,56 @@ Content-Type: {{contentType}}
       "name": "newsletter",
       "type": "checkbox",
       "label": "Subscribe to newsletter"
+    }
+  ]
+}
+
+### ============================================
+### Test 33: Test API Key - Valid Key
+### ============================================
+POST {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+X-API-Key: {{apiKey}}
+
+{
+  "fields": [
+    {
+      "name": "test",
+      "type": "text",
+      "label": "Test Field"
+    }
+  ]
+}
+
+### ============================================
+### Test 34: Test API Key - Invalid Key (Should Fail)
+### ============================================
+POST {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+X-API-Key: invalid-key-12345
+
+{
+  "fields": [
+    {
+      "name": "test",
+      "type": "text",
+      "label": "Test Field"
+    }
+  ]
+}
+
+### ============================================
+### Test 35: Test API Key - Missing Key (Should Fail)
+### ============================================
+POST {{baseUrl}}/auto-forms
+Content-Type: {{contentType}}
+
+{
+  "fields": [
+    {
+      "name": "test",
+      "type": "text",
+      "label": "Test Field"
     }
   ]
 }

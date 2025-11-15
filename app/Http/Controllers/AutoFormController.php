@@ -39,7 +39,7 @@ class AutoFormController extends Controller
 
     /**
      * Handle the auto form submission.
-     * Supports both GET (query string) and request body.
+     * POST request only, requires API key authentication.
      */
     public function store(AutoFormRequest $request): JsonResponse
     {
@@ -54,30 +54,45 @@ class AutoFormController extends Controller
         
         // Generate test data based on generator type
         if ($generator === 'ai') {
-            try {
-                $aiGenerator = new AIFormDataGenerator();
-                $testData = $aiGenerator->generate($fields, $locale);
-                $fakerLocale = null;
-                
-                return response()->json([
-                    'message' => 'Auto form endpoint (AI Generated)',
-                    'locale' => $locale,
-                    'generator' => 'ai',
-                    'test_data' => $testData
-                ]);
-            } catch (\Exception $e) {
-                // Fallback to Faker if AI fails
-                $fakerLocale = $this->getFakerLocale($locale);
-                $testData = $this->generateTestData($fields, $locale);
-                
-                return response()->json([
-                    'message' => 'Auto form endpoint (Faker - AI fallback)',
-                    'locale' => $locale,
-                    'faker_locale' => $fakerLocale,
-                    'generator' => 'faker',
-                    'test_data' => $testData
-                ]);
+            // Phân loại fields: chỉ dùng AI cho text/email/textarea/search
+            [$aiFields, $fakerFields] = $this->separateFieldsByType($fields);
+            
+            $testData = [];
+            $generatorsUsed = [];
+            $fakerLocale = $this->getFakerLocale($locale);
+            $faker = $this->getFakerInstance($locale);
+            
+            // Generate với Faker cho các field không cần AI
+            if (!empty($fakerFields)) {
+                $fakerData = $this->generateFieldsData($fakerFields, $faker, $fakerLocale);
+                $testData = array_merge($testData, $fakerData);
+                $generatorsUsed[] = 'faker';
             }
+            
+            // Generate với AI cho các field văn bản
+            if (!empty($aiFields)) {
+                try {
+                    $aiGenerator = new AIFormDataGenerator();
+                    $aiData = $aiGenerator->generate($aiFields, $locale);
+                    $testData = array_merge($testData, $aiData);
+                    $generatorsUsed[] = 'ai';
+                } catch (\Exception $e) {
+                    // Fallback to Faker nếu AI fail
+                    $fakerData = $this->generateFieldsData($aiFields, $faker, $fakerLocale);
+                    $testData = array_merge($testData, $fakerData);
+                    $generatorsUsed[] = 'faker (ai fallback)';
+                }
+            }
+            
+            return response()->json([
+                'message' => 'Auto form endpoint (Hybrid: AI + Faker)',
+                'locale' => $locale,
+                'faker_locale' => $fakerLocale,
+                'generator' => implode(' + ', $generatorsUsed),
+                'ai_fields_count' => count($aiFields),
+                'faker_fields_count' => count($fakerFields),
+                'test_data' => $testData
+            ]);
         }
         
         // Use Faker (default)
@@ -94,6 +109,58 @@ class AutoFormController extends Controller
     }
 
     /**
+     * Separate fields into AI fields (text-based) and Faker fields (simple types).
+     *
+     * @param array $fields
+     * @return array [aiFields, fakerFields]
+     */
+    private function separateFieldsByType(array $fields): array
+    {
+        // Field types cần AI (văn bản, cần tư duy)
+        $aiFieldTypes = ['text', 'email', 'textarea', 'search', 'input'];
+        
+        $aiFields = [];
+        $fakerFields = [];
+        
+        foreach ($fields as $field) {
+            $type = strtolower($field['type'] ?? 'text');
+            
+            if (in_array($type, $aiFieldTypes)) {
+                $aiFields[] = $field;
+            } else {
+                $fakerFields[] = $field;
+            }
+        }
+        
+        return [$aiFields, $fakerFields];
+    }
+
+    /**
+     * Generate test data for specific fields using Faker.
+     *
+     * @param array $fields
+     * @param \Faker\Generator $faker
+     * @param string $fakerLocale
+     * @return array
+     */
+    private function generateFieldsData(array $fields, $faker, string $fakerLocale): array
+    {
+        $testData = [];
+
+        foreach ($fields as $field) {
+            $name = $field['name'] ?? null;
+            if (!$name) {
+                continue;
+            }
+
+            $type = strtolower($field['type'] ?? 'text');
+            $testData[$name] = $this->generateValueByType($type, $field, $faker, $fakerLocale);
+        }
+
+        return $testData;
+    }
+
+    /**
      * Generate test data based on form fields using Faker.
      *
      * @param array $fields
@@ -102,23 +169,9 @@ class AutoFormController extends Controller
      */
     private function generateTestData(array $fields, ?string $locale = null): array
     {
-        $testData = [];
         $faker = $this->getFakerInstance($locale);
         $fakerLocale = $this->getFakerLocale($locale);
-
-        foreach ($fields as $field) {
-            $name = $field['name'] ?? null;
-            $type = strtolower($field['type'] ?? 'text');
-            
-            if (!$name) {
-                continue;
-            }
-
-            // Generate test data based on field type
-            $testData[$name] = $this->generateValueByType($type, $field, $faker, $fakerLocale);
-        }
-
-        return $testData;
+        return $this->generateFieldsData($fields, $faker, $fakerLocale);
     }
 
     /**

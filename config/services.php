@@ -39,4 +39,8 @@ return [
         'api_key' => env('OPENAI_API_KEY'),
     ],
 
+    'auto_forms' => [
+        'api_key' => env('AUTO_FORMS_API_KEY'),
+    ],
+
 ];

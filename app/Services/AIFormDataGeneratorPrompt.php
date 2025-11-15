@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Log;
-
 /**
  * Class chứa template prompt cho AI Form Data Generator.
  * Bạn có thể chỉnh sửa các method này để tùy chỉnh prompt theo nhu cầu.
@@ -47,24 +45,6 @@ class AIFormDataGeneratorPrompt
     public static function buildPrompt(array $fields, ?string $locale = 'en'): string
     {
         $localeName = self::LOCALE_NAMES[$locale] ?? 'tiếng Anh';
-        
-        // Kiểm tra trùng lặp field names
-        $fieldNames = [];
-        $duplicates = [];
-        foreach ($fields as $index => $field) {
-            $name = $field['name'] ?? 'field_' . ($index + 1);
-            if (isset($fieldNames[$name])) {
-                $duplicates[] = $name;
-            }
-            $fieldNames[$name] = ($fieldNames[$name] ?? 0) + 1;
-        }
-        
-        if (!empty($duplicates)) {
-            Log::warning('Duplicate field names detected in prompt', [
-                'duplicates' => $duplicates,
-                'field_counts' => $fieldNames,
-            ]);
-        }
         
         $prompt = "Hãy tạo dữ liệu test cho form với các yêu cầu sau:\n\n";
         $prompt .= "1. Ngôn ngữ: Tất cả dữ liệu phải được tạo bằng {$localeName}\n\n";
