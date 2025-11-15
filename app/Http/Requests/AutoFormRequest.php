@@ -49,6 +49,7 @@ class AutoFormRequest extends FormRequest
     {
         return [
             'locale' => 'nullable|string|in:en,ja,fr,de,es,it,pt,ru,ar',
+            'generator' => 'nullable|string|in:faker,ai',
             'fields' => 'required|array',
             'fields.*.name' => 'required|string',
             'fields.*.type' => 'required|string',

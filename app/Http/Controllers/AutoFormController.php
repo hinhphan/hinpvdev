@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AutoFormRequest;
+use App\Services\AIFormDataGenerator;
 use Illuminate\Http\JsonResponse;
 
 class AutoFormController extends Controller
@@ -46,20 +47,48 @@ class AutoFormController extends Controller
         $validated = $request->validated();
         $fields = $validated['fields'];
         $locale = $this->getValidatedLocale($validated['locale'] ?? null);
+        $generator = $validated['generator'] ?? 'faker';
         
         // Set app locale
         app()->setLocale($locale);
         
-        // Get Faker locale that will be used
-        $fakerLocale = $this->getFakerLocale($locale);
+        // Generate test data based on generator type
+        if ($generator === 'ai') {
+            try {
+                $aiGenerator = new AIFormDataGenerator();
+                $testData = $aiGenerator->generate($fields, $locale);
+                $fakerLocale = null;
+                
+                return response()->json([
+                    'message' => 'Auto form endpoint (AI Generated)',
+                    'locale' => $locale,
+                    'generator' => 'ai',
+                    'test_data' => $testData
+                ]);
+            } catch (\Exception $e) {
+                // Fallback to Faker if AI fails
+                $fakerLocale = $this->getFakerLocale($locale);
+                $testData = $this->generateTestData($fields, $locale);
+                
+                return response()->json([
+                    'message' => 'Auto form endpoint (Faker - AI fallback)',
+                    'locale' => $locale,
+                    'faker_locale' => $fakerLocale,
+                    'generator' => 'faker',
+                    'test_data' => $testData
+                ]);
+            }
+        }
         
-        // Generate test data based on fields
+        // Use Faker (default)
+        $fakerLocale = $this->getFakerLocale($locale);
         $testData = $this->generateTestData($fields, $locale);
         
         return response()->json([
             'message' => 'Auto form endpoint',
             'locale' => $locale,
             'faker_locale' => $fakerLocale,
+            'generator' => 'faker',
             'test_data' => $testData
         ]);
     }

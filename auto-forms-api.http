@@ -1124,3 +1124,119 @@ Content-Type: {{contentType}}
   ]
 }
 
+### ============================================
+### Test 30: AI Generator - Basic Form
+### ============================================
+### Lưu ý: Cần có OPENAI_API_KEY trong file .env
+GET {{baseUrl}}/auto-forms?generator=ai
+Content-Type: {{contentType}}
+
+{
+  "locale": "en",
+  "generator": "ai",
+  "fields": [
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "placeholder": "Enter your email"
+    },
+    {
+      "name": "full_name",
+      "type": "text",
+      "label": "Full Name",
+      "min_length": 5,
+      "max_length": 50
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "label": "Age",
+      "min": 18,
+      "max": 100
+    }
+  ]
+}
+
+### ============================================
+### Test 31: AI Generator - Japanese Locale
+### ============================================
+GET {{baseUrl}}/auto-forms?generator=ai
+Content-Type: {{contentType}}
+
+{
+  "locale": "ja",
+  "generator": "ai",
+  "fields": [
+    {
+      "name": "name",
+      "type": "text",
+      "label": "名前",
+      "min_length": 3,
+      "max_length": 30
+    },
+    {
+      "name": "description",
+      "type": "textarea",
+      "label": "説明",
+      "min_length": 20,
+      "max_length": 200
+    },
+    {
+      "name": "status",
+      "type": "select",
+      "label": "ステータス",
+      "options": ["アクティブ", "非アクティブ", "保留中"]
+    }
+  ]
+}
+
+### ============================================
+### Test 32: AI Generator - Complex Form
+### ============================================
+GET {{baseUrl}}/auto-forms?generator=ai
+Content-Type: {{contentType}}
+
+{
+  "locale": "en",
+  "generator": "ai",
+  "fields": [
+    {
+      "name": "username",
+      "type": "text",
+      "label": "Username",
+      "min_length": 3,
+      "max_length": 20
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "label": "Password",
+      "min_length": 8,
+      "max_length": 32
+    },
+    {
+      "name": "birth_date",
+      "type": "date",
+      "label": "Birth Date"
+    },
+    {
+      "name": "gender",
+      "type": "radio",
+      "label": "Gender",
+      "options": ["Male", "Female", "Other"]
+    },
+    {
+      "name": "country",
+      "type": "select",
+      "label": "Country",
+      "options": ["USA", "UK", "Canada", "Australia"]
+    },
+    {
+      "name": "newsletter",
+      "type": "checkbox",
+      "label": "Subscribe to newsletter"
+    }
+  ]
+}
+
