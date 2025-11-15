@@ -61,9 +61,8 @@ class AIFormDataGenerator
         }
 
         $startTime = microtime(true);
+        // Gộp system + user thành một prompt duy nhất để tối ưu
         $prompt = $this->buildPrompt($fields, $locale);
-        $systemMessage = AIFormDataGeneratorPrompt::getSystemMessage();
-        $fullPrompt = $systemMessage . "\n\n" . $prompt;
         
         // Kiểm tra và log trùng lặp field names
         $fieldNames = array_map(fn($f) => $f['name'] ?? 'unknown', $fields);
@@ -80,23 +79,19 @@ class AIFormDataGenerator
             'model' => $this->model,
             'locale' => $locale,
             'fields_count' => count($fields),
-            'prompt_length' => strlen($fullPrompt),
+            'prompt_length' => strlen($prompt),
         ]);
         
-        Log::info('OpenAI API Prompt Content', ['full_prompt' => $fullPrompt]);
+        Log::info('OpenAI API Prompt Content', ['prompt' => $prompt]);
         
         try {
             $requestStartTime = microtime(true);
             
-            // Gọi trực tiếp OpenAI API theo documentation: https://platform.openai.com/docs/guides/text
+            // Gọi trực tiếp OpenAI API - chỉ dùng user message (đã gộp system + user)
             $response = $this->httpClient->post('v1/chat/completions', [
                 'json' => [
                     'model' => $this->model,
                     'messages' => [
-                        [
-                            'role' => 'system',
-                            'content' => AIFormDataGeneratorPrompt::getSystemMessage()
-                        ],
                         [
                             'role' => 'user',
                             'content' => $prompt
