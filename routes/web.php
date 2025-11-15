@@ -23,6 +23,7 @@ Route::get('/tags/{slug}', [TagController::class, 'show'])->name('tags.show');
 
 // API endpoints
 Route::get('/api/tags', [TagController::class, 'apiIndex'])->name('api.tags');
+Route::get('/auto-forms/types', [AutoFormController::class, 'types'])->name('api.auto-forms.types');
 Route::post('/auto-forms', [AutoFormController::class, 'store'])->name('api.auto-forms');
 
 // Error Pages

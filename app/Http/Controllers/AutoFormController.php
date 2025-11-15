@@ -15,6 +15,7 @@ class AutoFormController extends Controller
      */
     private const ALLOWED_LOCALES = [
         'en' => 'en_US', // English
+        'vi' => 'vi_VN', // Vietnamese
         'ja' => 'ja_JP', // Japanese
         'fr' => 'fr_FR', // French
         'de' => 'de_DE', // German
@@ -29,13 +30,145 @@ class AutoFormController extends Controller
      * Locales that are known to be fully supported by Faker.
      */
     private const SUPPORTED_FAKER_LOCALES = [
-        'en_US', 'ja_JP', 'fr_FR', 'de_DE', 'es_ES', 'it_IT', 'pt_BR', 'ru_RU', 'ar_SA'
+        'en_US', 'vi_VN', 'ja_JP', 'fr_FR', 'de_DE', 'es_ES', 'it_IT', 'pt_BR', 'ru_RU', 'ar_SA'
     ];
 
     /**
      * Default locale (fallback).
      */
     private const DEFAULT_LOCALE = 'en';
+
+    /**
+     * Get list of supported field types.
+     * 
+     * @return JsonResponse
+     */
+    public function types(): JsonResponse
+    {
+        $types = [
+            // Email types
+            ['value' => 'email', 'text' => 'Email', 'group_name' => 'Email'],
+            ['value' => 'email-safe', 'text' => 'Email Safe', 'group_name' => 'Email'],
+            ['value' => 'email-free', 'text' => 'Email Free', 'group_name' => 'Email'],
+            ['value' => 'email-company', 'text' => 'Email Company', 'group_name' => 'Email'],
+            
+            // Password
+            ['value' => 'password', 'text' => 'Password', 'group_name' => 'Security'],
+            
+            // Phone
+            ['value' => 'tel', 'text' => 'Tel', 'group_name' => 'Contact'],
+            ['value' => 'phone', 'text' => 'Phone', 'group_name' => 'Contact'],
+            ['value' => 'telephone', 'text' => 'Telephone', 'group_name' => 'Contact'],
+            
+            // URL & Domain
+            ['value' => 'url', 'text' => 'URL', 'group_name' => 'Web'],
+            ['value' => 'domain', 'text' => 'Domain', 'group_name' => 'Web'],
+            ['value' => 'domain-name', 'text' => 'Domain Name', 'group_name' => 'Web'],
+            ['value' => 'slug', 'text' => 'Slug', 'group_name' => 'Web'],
+            
+            // Numbers
+            ['value' => 'number', 'text' => 'Number', 'group_name' => 'Number'],
+            ['value' => 'numeric', 'text' => 'Numeric', 'group_name' => 'Number'],
+            ['value' => 'random-digit', 'text' => 'Random Digit', 'group_name' => 'Number'],
+            ['value' => 'random-digit-not-zero', 'text' => 'Random Digit Not Zero', 'group_name' => 'Number'],
+            ['value' => 'random-number', 'text' => 'Random Number', 'group_name' => 'Number'],
+            ['value' => 'random-float', 'text' => 'Random Float', 'group_name' => 'Number'],
+            ['value' => 'range', 'text' => 'Range', 'group_name' => 'Number'],
+            
+            // Date & Time
+            ['value' => 'date', 'text' => 'Date', 'group_name' => 'Date & Time'],
+            ['value' => 'datetime', 'text' => 'DateTime', 'group_name' => 'Date & Time'],
+            ['value' => 'datetime-local', 'text' => 'DateTime Local', 'group_name' => 'Date & Time'],
+            ['value' => 'time', 'text' => 'Time', 'group_name' => 'Date & Time'],
+            ['value' => 'month', 'text' => 'Month', 'group_name' => 'Date & Time'],
+            ['value' => 'week', 'text' => 'Week', 'group_name' => 'Date & Time'],
+            ['value' => 'unix-time', 'text' => 'Unix Time', 'group_name' => 'Date & Time'],
+            ['value' => 'iso8601', 'text' => 'ISO8601', 'group_name' => 'Date & Time'],
+            
+            // Color
+            ['value' => 'color', 'text' => 'Color', 'group_name' => 'Color'],
+            ['value' => 'hex-color', 'text' => 'Hex Color', 'group_name' => 'Color'],
+            ['value' => 'safe-hex-color', 'text' => 'Safe Hex Color', 'group_name' => 'Color'],
+            ['value' => 'rgb-color', 'text' => 'RGB Color', 'group_name' => 'Color'],
+            ['value' => 'rgb-css-color', 'text' => 'RGB CSS Color', 'group_name' => 'Color'],
+            ['value' => 'rgba-css-color', 'text' => 'RGBA CSS Color', 'group_name' => 'Color'],
+            ['value' => 'hsl-color', 'text' => 'HSL Color', 'group_name' => 'Color'],
+            
+            // Boolean
+            ['value' => 'checkbox', 'text' => 'Checkbox', 'group_name' => 'Boolean'],
+            ['value' => 'boolean', 'text' => 'Boolean', 'group_name' => 'Boolean'],
+            
+            // Select & Radio
+            ['value' => 'radio', 'text' => 'Radio', 'group_name' => 'Selection'],
+            ['value' => 'select', 'text' => 'Select', 'group_name' => 'Selection'],
+            
+            // Text types
+            ['value' => 'textarea', 'text' => 'Textarea', 'group_name' => 'Text'],
+            ['value' => 'search', 'text' => 'Search', 'group_name' => 'Text'],
+            ['value' => 'text', 'text' => 'Text', 'group_name' => 'Text'],
+            ['value' => 'input', 'text' => 'Input', 'group_name' => 'Text'],
+            ['value' => 'word', 'text' => 'Word', 'group_name' => 'Text'],
+            ['value' => 'words', 'text' => 'Words', 'group_name' => 'Text'],
+            ['value' => 'sentence', 'text' => 'Sentence', 'group_name' => 'Text'],
+            ['value' => 'paragraph', 'text' => 'Paragraph', 'group_name' => 'Text'],
+            
+            // File
+            ['value' => 'file', 'text' => 'File', 'group_name' => 'File'],
+            ['value' => 'file-upload', 'text' => 'File Upload', 'group_name' => 'File'],
+            ['value' => 'mime-type', 'text' => 'MIME Type', 'group_name' => 'File'],
+            ['value' => 'file-extension', 'text' => 'File Extension', 'group_name' => 'File'],
+            
+            // Network
+            ['value' => 'ip', 'text' => 'IP', 'group_name' => 'Network'],
+            ['value' => 'ipv4', 'text' => 'IPv4', 'group_name' => 'Network'],
+            ['value' => 'ipv6', 'text' => 'IPv6', 'group_name' => 'Network'],
+            ['value' => 'local-ipv4', 'text' => 'Local IPv4', 'group_name' => 'Network'],
+            ['value' => 'mac-address', 'text' => 'MAC Address', 'group_name' => 'Network'],
+            ['value' => 'user-agent', 'text' => 'User Agent', 'group_name' => 'Network'],
+            
+            // Payment
+            ['value' => 'credit-card', 'text' => 'Credit Card', 'group_name' => 'Payment'],
+            ['value' => 'creditcard', 'text' => 'Credit Card', 'group_name' => 'Payment'],
+            ['value' => 'credit-card-type', 'text' => 'Credit Card Type', 'group_name' => 'Payment'],
+            ['value' => 'credit-card-expiration', 'text' => 'Credit Card Expiration', 'group_name' => 'Payment'],
+            ['value' => 'iban', 'text' => 'IBAN', 'group_name' => 'Payment'],
+            ['value' => 'swift-bic', 'text' => 'SWIFT BIC', 'group_name' => 'Payment'],
+            
+            // Identifiers
+            ['value' => 'hidden', 'text' => 'Hidden', 'group_name' => 'Identifier'],
+            ['value' => 'uuid', 'text' => 'UUID', 'group_name' => 'Identifier'],
+            ['value' => 'ean13', 'text' => 'EAN13', 'group_name' => 'Identifier'],
+            ['value' => 'ean8', 'text' => 'EAN8', 'group_name' => 'Identifier'],
+            ['value' => 'isbn10', 'text' => 'ISBN10', 'group_name' => 'Identifier'],
+            ['value' => 'isbn13', 'text' => 'ISBN13', 'group_name' => 'Identifier'],
+            ['value' => 'barcode', 'text' => 'Barcode', 'group_name' => 'Identifier'],
+            
+            // Hash
+            ['value' => 'md5', 'text' => 'MD5', 'group_name' => 'Hash'],
+            ['value' => 'sha1', 'text' => 'SHA1', 'group_name' => 'Hash'],
+            ['value' => 'sha256', 'text' => 'SHA256', 'group_name' => 'Hash'],
+            
+            // Location
+            ['value' => 'country-code', 'text' => 'Country Code', 'group_name' => 'Location'],
+            ['value' => 'country-iso-alpha3', 'text' => 'Country ISO Alpha3', 'group_name' => 'Location'],
+            ['value' => 'language-code', 'text' => 'Language Code', 'group_name' => 'Location'],
+            ['value' => 'currency-code', 'text' => 'Currency Code', 'group_name' => 'Location'],
+            ['value' => 'timezone', 'text' => 'Timezone', 'group_name' => 'Location'],
+            
+            // Other
+            ['value' => 'emoji', 'text' => 'Emoji', 'group_name' => 'Other'],
+            ['value' => 'semver', 'text' => 'Semver', 'group_name' => 'Other'],
+            ['value' => 'version', 'text' => 'Version', 'group_name' => 'Other'],
+            ['value' => 'username', 'text' => 'Username', 'group_name' => 'Other'],
+            ['value' => 'tld', 'text' => 'TLD', 'group_name' => 'Other'],
+        ];
+        
+        return response()->json([
+            'message' => 'Supported field types',
+            'total' => count($types),
+            'types' => $types
+        ]);
+    }
 
     /**
      * Handle the auto form submission.
@@ -186,30 +319,117 @@ class AutoFormController extends Controller
     private function generateValueByType(string $type, array $field, $faker, string $fakerLocale)
     {
         return match ($type) {
+            // Email types
             'email' => $faker->safeEmail(),
+            'email-safe' => $faker->safeEmail(),
+            'email-free' => $faker->freeEmail(),
+            'email-company' => $faker->companyEmail(),
+            
+            // Password
             'password' => $this->generatePassword($field, $faker),
-            'tel', 'phone' => $faker->phoneNumber(),
+            
+            // Phone
+            'tel', 'phone', 'telephone' => $faker->phoneNumber(),
+            
+            // URL & Domain
             'url' => $faker->url(),
+            'domain', 'domain-name' => $faker->domainName(),
+            'slug' => $faker->slug(),
+            
+            // Numbers
             'number', 'numeric' => $this->generateNumber($field, $faker),
+            'random-digit' => $faker->randomDigit(),
+            'random-digit-not-zero' => $faker->randomDigitNotNull(),
+            'random-number' => $faker->randomNumber(),
+            'random-float' => $faker->randomFloat(2, 0, 1000),
+            'range' => $this->generateRange($field, $faker),
+            
+            // Date & Time
             'date' => $faker->date('Y-m-d'),
             'datetime', 'datetime-local' => $faker->dateTime()->format('Y-m-d\TH:i'),
             'time' => $faker->time('H:i'),
             'month' => $faker->date('Y-m'),
             'week' => $faker->date('Y-\WW'),
+            'unix-time' => $faker->unixTime(),
+            'iso8601' => $faker->iso8601(),
+            
+            // Color
             'color' => $faker->hexColor(),
-            'range' => $this->generateRange($field, $faker),
+            'hex-color' => $faker->hexColor(),
+            'safe-hex-color' => $faker->safeHexColor(),
+            'rgb-color' => $faker->rgbColor(),
+            'rgb-css-color' => $faker->rgbCssColor(),
+            'rgba-css-color' => $faker->rgbaCssColor(),
+            'hsl-color' => $faker->hslColor(),
+            
+            // Boolean
             'checkbox' => $faker->boolean(),
+            'boolean' => $faker->boolean(),
+            
+            // Select & Radio
             'radio' => $this->getRandomOption($field, $faker),
             'select' => $this->getRandomOption($field, $faker),
+            
+            // Text types
             'textarea' => $this->generateLocalizedParagraph($faker, $fakerLocale, 3, $field),
+            'search' => $this->generateLocalizedWords($faker, $fakerLocale, 3, $field),
+            'text', 'input' => $this->generateLocalizedText($faker, $fakerLocale, 50, $field),
+            'word' => $faker->word(),
+            'words' => implode(' ', $faker->words(3)),
+            'sentence' => $faker->sentence(),
+            'paragraph' => $faker->paragraph(),
+            
+            // File
             'file', 'file-upload' => [
                 'name' => $faker->word() . '.' . $faker->fileExtension(),
                 'size' => $faker->numberBetween(1000, 5000000),
                 'type' => $faker->mimeType(),
             ],
+            'mime-type' => $faker->mimeType(),
+            'file-extension' => $faker->fileExtension(),
+            
+            // Network
+            'ip', 'ipv4' => $faker->ipv4(),
+            'ipv6' => $faker->ipv6(),
+            'local-ipv4' => $faker->localIpv4(),
+            'mac-address' => $faker->macAddress(),
+            'user-agent' => $faker->userAgent(),
+            
+            // Payment
+            'credit-card', 'creditcard' => $faker->creditCardNumber(),
+            'credit-card-type' => $faker->creditCardType(),
+            'credit-card-expiration' => $faker->creditCardExpirationDateString(),
+            'iban' => $faker->iban(),
+            'swift-bic' => $faker->swiftBicNumber(),
+            
+            // Identifiers
             'hidden' => $faker->uuid(),
-            'search' => $this->generateLocalizedWords($faker, $fakerLocale, 3, $field),
-            'text', 'input' => $this->generateLocalizedText($faker, $fakerLocale, 50, $field),
+            'uuid' => $faker->uuid(),
+            'ean13' => $faker->ean13(),
+            'ean8' => $faker->ean8(),
+            'isbn10' => $faker->isbn10(),
+            'isbn13' => $faker->isbn13(),
+            'barcode' => $faker->ean13(),
+            
+            // Hash
+            'md5' => $faker->md5(),
+            'sha1' => $faker->sha1(),
+            'sha256' => $faker->sha256(),
+            
+            // Location
+            'country-code' => $faker->countryCode(),
+            'country-iso-alpha3' => $faker->countryISOAlpha3(),
+            'language-code' => $faker->languageCode(),
+            'currency-code' => $faker->currencyCode(),
+            'timezone' => $faker->timezone(),
+            
+            // Other
+            'emoji' => $faker->emoji(),
+            'semver', 'version' => $faker->semver(),
+            'username', 'user-name' => $faker->userName(), // user-name được map về username
+            'tld' => $faker->tld(),
+            
+            // Default fallback
             default => $this->generateLocalizedText($faker, $fakerLocale, 50, $field),
         };
     }

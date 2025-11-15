@@ -61,8 +61,10 @@ class AIFormDataGenerator
         }
 
         $startTime = microtime(true);
-        // Gộp system + user thành một prompt duy nhất để tối ưu
-        $prompt = $this->buildPrompt($fields, $locale);
+        
+        // Tách system message (cache) và user message (thay đổi)
+        $systemMessage = AIFormDataGeneratorPrompt::getSystemMessage();
+        $userMessage = AIFormDataGeneratorPrompt::buildUserMessage($fields, $locale);
         
         // Kiểm tra và log trùng lặp field names
         $fieldNames = array_map(fn($f) => $f['name'] ?? 'unknown', $fields);
@@ -75,30 +77,62 @@ class AIFormDataGenerator
             ]);
         }
         
+        $totalPromptLength = strlen($systemMessage) + strlen($userMessage);
+        
         Log::info('OpenAI API Request Started', [
+            'endpoint' => 'v1/chat/completions',
             'model' => $this->model,
             'locale' => $locale,
             'fields_count' => count($fields),
-            'prompt_length' => strlen($prompt),
+            'system_message_length' => strlen($systemMessage),
+            'user_message_length' => strlen($userMessage),
+            'total_prompt_length' => $totalPromptLength,
+            'note' => 'Sử dụng chat/completions với tối ưu tốc độ (temperature=0.3, max_tokens=2000)',
         ]);
         
-        Log::info('OpenAI API Prompt Content', ['prompt' => $prompt]);
+        Log::info('OpenAI API Prompt Content', [
+            'system_message' => $systemMessage,
+            'user_message' => $userMessage,
+        ]);
         
         try {
             $requestStartTime = microtime(true);
             
-            // Gọi trực tiếp OpenAI API - chỉ dùng user message (đã gộp system + user)
-            $response = $this->httpClient->post('v1/chat/completions', [
-                'json' => [
-                    'model' => $this->model,
-                    'messages' => [
-                        [
-                            'role' => 'user',
-                            'content' => $prompt
-                        ]
-                    ],
-                    'response_format' => ['type' => 'json_object'],
+            // Responses API yêu cầu prompt.id - có thể cần tạo prompt trước hoặc format khác
+            // Tạm thời quay lại chat/completions với format tối ưu cho tốc độ
+            // Hoặc có thể Responses API cần workflow khác (tạo prompt trước, sau đó dùng ID)
+            
+            // Thử format đơn giản hơn: dùng chat/completions nhưng tối ưu
+            $endpoint = 'v1/chat/completions';
+            
+            // Gộp system và user message thành một prompt ngắn gọn
+            $fullPrompt = $systemMessage . "\n\n" . $userMessage;
+            
+            // Sử dụng chat/completions với format tối ưu
+            // Model gpt-5-nano có các giới hạn: chỉ hỗ trợ temperature default (1), dùng max_completion_tokens
+            $requestBody = [
+                'model' => $this->model,
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => $fullPrompt
+                    ]
                 ],
+                'response_format' => ['type' => 'json_object'],
+            ];
+            
+            // Model gpt-5-nano: dùng max_completion_tokens, không hỗ trợ temperature tùy chỉnh
+            if (strpos($this->model, 'gpt-5') !== false) {
+                $requestBody['max_completion_tokens'] = 2000;
+                // Không set temperature - model chỉ hỗ trợ default (1)
+            } else {
+                // Model cũ: dùng max_tokens và có thể tùy chỉnh temperature
+                $requestBody['max_tokens'] = 2000;
+                $requestBody['temperature'] = 0.3; // Tối ưu tốc độ cho model cũ
+            }
+            
+            $response = $this->httpClient->post($endpoint, [
+                'json' => $requestBody,
             ]);
 
             $requestTime = microtime(true) - $requestStartTime;
@@ -115,6 +149,7 @@ class AIFormDataGenerator
             $model = $responseBody['model'] ?? $this->model;
             
             Log::info('OpenAI API Request Completed', [
+                'endpoint' => $endpoint,
                 'request_time_seconds' => round($requestTime, 3),
                 'response_id' => $responseId,
                 'model_used' => $model,
@@ -123,11 +158,27 @@ class AIFormDataGenerator
                 'total_tokens' => $usage['total_tokens'] ?? 'N/A',
             ]);
 
-            $content = $responseBody['choices'][0]['message']['content'] ?? null;
+            // Chat/completions response format
+            $content = null;
+            
+            // Format chat/completions: response.choices[0].message.content
+            if (isset($responseBody['choices'][0]['message']['content'])) {
+                $content = $responseBody['choices'][0]['message']['content'];
+            } elseif (isset($responseBody['text'])) {
+                // Fallback cho responses API format (nếu có)
+                $content = $responseBody['text'];
+            } elseif (isset($responseBody['content'])) {
+                // Fallback khác
+                $content = $responseBody['content'];
+            } elseif (isset($responseBody['choices'][0]['text'])) {
+                // Fallback cho completions format cũ
+                $content = $responseBody['choices'][0]['text'];
+            }
             
             if (!$content) {
                 Log::warning('OpenAI API returned empty content', [
                     'response_id' => $responseId,
+                    'response_structure' => array_keys($responseBody),
                 ]);
                 throw new \RuntimeException('Không nhận được phản hồi từ OpenAI API');
             }
