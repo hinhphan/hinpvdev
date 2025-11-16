@@ -23,8 +23,17 @@ Route::get('/tags/{slug}', [TagController::class, 'show'])->name('tags.show');
 
 // API endpoints
 Route::get('/api/tags', [TagController::class, 'apiIndex'])->name('api.tags');
-Route::get('/auto-forms/types', [AutoFormController::class, 'types'])->name('api.auto-forms.types');
-Route::post('/auto-forms', [AutoFormController::class, 'store'])->name('api.auto-forms');
+
+// Auto Forms API with rate limiting
+// GET /auto-forms/types: 120 requests per minute (lightweight endpoint)
+Route::get('/auto-forms/types', [AutoFormController::class, 'types'])
+    ->middleware('throttle:120,1')
+    ->name('api.auto-forms.types');
+
+// POST /auto-forms: 60 requests per minute (resource-intensive, may use AI)
+Route::post('/auto-forms', [AutoFormController::class, 'store'])
+    ->middleware('throttle:60,1')
+    ->name('api.auto-forms');
 
 // Error Pages
 Route::get('/not-found', function () {
